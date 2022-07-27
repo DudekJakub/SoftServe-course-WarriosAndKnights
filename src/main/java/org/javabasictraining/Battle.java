@@ -8,11 +8,11 @@ public class Battle {
         while (attacker.isAlive() && defender.isAlive()) {
             attacker.hit(defender);
             if (!defender.isAlive()) {
-                return false;
+                return defender.isAlive();
             } else {
                 defender.hit(attacker);
             }
         }
-        return true;
+        return defender.isAlive();
     }
 }
