@@ -1,12 +1,15 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.study.warriors.model.Army;
+import org.study.warriors.model.Unit;
+import org.study.warriors.model.Warrior;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArmyBasicFunctionalityTestSuite {
+class ArmyTestSuite {
 
     private final Army army = new Army();
 

@@ -1,7 +1,6 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors.model;
 
 import java.util.ArrayDeque;
-import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.function.Supplier;
 
@@ -30,15 +29,15 @@ public class Army {
         }
     }
 
-    Warrior getUnit() {
+    public Warrior getUnit() {
         return this.getSoldiers().peek();
     }
 
-    void removeDeadSolider() {
+    public void removeDeadSolider() {
         this.getSoldiers().poll();
     }
 
-    boolean isArmyEmpty() {
+    public boolean isArmyEmpty() {
         return this.getSoldiers().isEmpty();
     }
 }

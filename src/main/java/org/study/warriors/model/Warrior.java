@@ -1,4 +1,4 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors.model;
 
 public class Warrior implements Unit, Cloneable {
     static final int INITIAL_HEALTH = 50;

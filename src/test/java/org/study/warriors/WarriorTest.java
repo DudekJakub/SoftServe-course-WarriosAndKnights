@@ -1,6 +1,7 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors;
 
 import org.junit.jupiter.api.Test;
+import org.study.warriors.model.Warrior;
 
 import static org.junit.jupiter.api.Assertions.*;
 

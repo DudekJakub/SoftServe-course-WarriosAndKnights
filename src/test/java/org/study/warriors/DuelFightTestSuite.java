@@ -1,7 +1,11 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.study.warriors.model.Knight;
+import org.study.warriors.model.Warrior;
+import org.study.warriors.service.Battle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,7 +72,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        assertFalse(battleResult);
+        Assertions.assertFalse(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -84,7 +88,7 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        assertTrue(battleResult);
+        Assertions.assertTrue(battleResult);
         assertTrue(isKnightAlive);
     }
 
@@ -100,7 +104,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        assertTrue(battleResult);
+        Assertions.assertTrue(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -116,7 +120,7 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        assertFalse(battleResult);
+        Assertions.assertFalse(battleResult);
         assertTrue(isKnightAlive);
     }
 }

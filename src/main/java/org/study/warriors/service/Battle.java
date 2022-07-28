@@ -1,4 +1,7 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors.service;
+
+import org.study.warriors.model.Army;
+import org.study.warriors.model.Warrior;
 
 public class Battle {
 

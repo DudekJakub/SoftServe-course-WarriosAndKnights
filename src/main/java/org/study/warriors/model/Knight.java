@@ -1,4 +1,4 @@
-package org.javabasictraining.encapsulatedApproach;
+package org.study.warriors.model;
 
 public class Knight extends Warrior {
     static final int ATTACK = 5;
