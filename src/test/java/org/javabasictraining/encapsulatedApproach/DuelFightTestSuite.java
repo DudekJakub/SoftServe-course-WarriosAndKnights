@@ -1,4 +1,4 @@
-package org.javabasictraining;
+package org.javabasictraining.encapsulatedApproach;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ class DuelFightTestSuite {
     @Test
     void smokeTest() {
         //Given
-        var chuck = new Warrior();
+        Warrior chuck = new Warrior();
         var bruce = new Warrior();
         var carl = new Knight();
         var dave = new Warrior();
