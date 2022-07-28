@@ -33,7 +33,7 @@ class ArmyFightTestSuite {
         Army warriors = new Army();
         Army knights = new Army();
         warriors.addUnits(Warrior::new, 3);
-        knights.addUnits(new Warrior(50, 7, false), 3);
+        knights.addUnits(new Warrior(50, 7), 3);
 
         //When
         Battle.fight(warriors, knights);

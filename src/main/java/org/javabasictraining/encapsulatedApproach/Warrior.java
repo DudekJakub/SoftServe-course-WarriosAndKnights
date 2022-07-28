@@ -3,20 +3,17 @@ package org.javabasictraining.encapsulatedApproach;
 public class Warrior implements Unit, Cloneable {
     static final int INITIAL_HEALTH = 50;
     static final int ATTACK = 5;
-    static boolean IS_CURSED = false;
 
     private int health;
     private int attack;
-    private boolean isCursed;
 
     public Warrior() {
-        this(INITIAL_HEALTH, ATTACK, IS_CURSED);
+        this(INITIAL_HEALTH, ATTACK);
     }
 
-    public Warrior(int health, int attack, boolean isCursed) {
+    public Warrior(int health, int attack) {
         this.health = health;
         this.attack = attack;
-        this.isCursed = isCursed;
     }
 
     public int getAttack() {
@@ -37,16 +34,6 @@ public class Warrior implements Unit, Cloneable {
 
     public void hit(Warrior target) {
         target.health -= getAttack();
-    }
-
-    @Override
-    public void reduceHealth(int damage) {
-        this.health -= damage;
-    }
-
-    @Override
-    public void setCurse(boolean isCursed) {
-        this.isCursed = isCursed;
     }
 
     protected Warrior shallowClone() {
