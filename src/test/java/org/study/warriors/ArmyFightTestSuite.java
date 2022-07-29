@@ -2,9 +2,9 @@ package org.study.warriors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.Army;
-import org.study.warriors.model.Unit;
-import org.study.warriors.model.Warrior;
+import org.study.warriors.model.*;
+import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.service.Battle;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,13 +21,14 @@ class ArmyFightTestSuite {
         warriors.addUnits(Unit.UnitType.WARRIOR, 3);
 
         //When
-        Battle.fight(knights, warriors);
-        var knightsQuantity = knights.getSoldiers().size();
-        var warriorsQuantity = warriors.getSoldiers().size();
+        var armyBattleResult = Battle.fight(knights, warriors);
+        var warriorsAlive = warriors.getSoldiers().stream()
+                .filter(IWarrior::isAlive)
+                .count();
 
         //Then
-        assertTrue(knightsQuantity > 0);
-        assertEquals(0, warriorsQuantity);
+        assertFalse(armyBattleResult);
+        assertEquals(0, warriorsAlive);
     }
 
     @Test
@@ -36,17 +37,20 @@ class ArmyFightTestSuite {
         //Given
         Army warriors = new Army();
         Army knights = new Army();
-        warriors.addUnits(Warrior::new, 3);
-        knights.addUnits(new Warrior(50, 7), 3);
+        warriors.addUnits(Warrior.class, 3);
+        knights.addUnits(Knight.class, 3);
 
         //When
-        Battle.fight(warriors, knights);
-        var warriorsQuantity = warriors.getSoldiers().size();
-        var knightsQuantity = knights.getSoldiers().size();
-
+        var armyBattleResult = Battle.fight(warriors, knights);
+        var knightsAlive = knights.getSoldiers().stream()
+                                                      .filter(IWarrior::isAlive)
+                                                      .count();
+        var warriorsAlive = warriors.getSoldiers().stream()
+                                                        .filter(IWarrior::isAlive)
+                                                        .count();
         //Then
-        assertFalse(warriorsQuantity > 0);
-        assertTrue(knightsQuantity > 0);
-        assertEquals(1, knightsQuantity);
+        assertTrue(armyBattleResult);
+        assertEquals(1, knightsAlive);
+        assertEquals(0, warriorsAlive);
     }
 }

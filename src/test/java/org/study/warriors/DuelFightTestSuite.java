@@ -1,10 +1,8 @@
 package org.study.warriors;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.Knight;
-import org.study.warriors.model.Warrior;
+import org.study.warriors.model.*;
 import org.study.warriors.service.Battle;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +12,7 @@ class DuelFightTestSuite {
     @Test
     void smokeTest() {
         //Given
-        Warrior chuck = new Warrior();
+        var chuck = new Warrior();
         var bruce = new Warrior();
         var carl = new Knight();
         var dave = new Warrior();
@@ -72,7 +70,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        Assertions.assertFalse(battleResult);
+        assertFalse(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -88,7 +86,7 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        Assertions.assertTrue(battleResult);
+        assertTrue(battleResult);
         assertTrue(isKnightAlive);
     }
 
@@ -104,7 +102,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        Assertions.assertTrue(battleResult);
+        assertTrue(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -120,7 +118,68 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        Assertions.assertFalse(battleResult);
+        assertFalse(battleResult);
         assertTrue(isKnightAlive);
+    }
+
+    @Test
+    @DisplayName("7. Fight: Warrior attacks warrior and second one should be dead")
+    void whenWarriorAttacksWarrior_BothShouldBeDead() {
+        //Given
+        var warrior1 = new Warrior();
+        var warrior2 = new Warrior();
+
+        //When
+        Battle.fight(warrior1, warrior2);
+        var isWarrior1Alive = warrior1.isAlive();
+        var isWarrior2Alive = warrior2.isAlive();
+
+        //Then
+        assertTrue(isWarrior1Alive);
+        assertFalse(isWarrior2Alive);
+    }
+
+    @Test
+    @DisplayName("8. Fight: Knight attacks knight and second one should be dead")
+    void whenKnightAttacksKnight_BothShouldBeDead() {
+        //Given
+        var knight1 = new Knight();
+        var knight2 = new Knight();
+
+        //When
+        Battle.fight(knight1, knight2);
+        var isKnight1Alive = knight1.isAlive();
+        var isKnight2Alive = knight2.isAlive();
+
+        //Then
+        assertTrue(isKnight1Alive);
+        assertFalse(isKnight2Alive);
+    }
+
+    @Test
+    @DisplayName("9. Fight: Rookie attack defender and second one shouldn't lose any HP")
+    void whenRookieAttacksDefender_DefenderShouldNotLoseAnyHp() {
+        //Given
+        var rookie = new Rookie();
+        var defender = new Defender();
+        var defenderHealthBeforeFight = defender.getHealth();
+
+        //When
+        Battle.fight(rookie, defender);
+        var isRookieAlive = rookie.isAlive();
+        var isDefenderAlive = defender.isAlive();
+        var defenderHealthAfterFight = defender.getHealth();
+
+        //Then
+        assertFalse(isRookieAlive);
+        assertTrue(isDefenderAlive);
+        assertEquals(defenderHealthBeforeFight, defenderHealthAfterFight);
+    }
+
+    private static class Rookie extends Warrior {
+        @Override
+        public int getAttack() {
+            return 1;
+        }
     }
 }

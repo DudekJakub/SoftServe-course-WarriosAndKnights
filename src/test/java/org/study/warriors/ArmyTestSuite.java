@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.study.warriors.model.Army;
-import org.study.warriors.model.Unit;
+import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.Warrior;
 
 import static org.junit.jupiter.api.Assertions.*;
