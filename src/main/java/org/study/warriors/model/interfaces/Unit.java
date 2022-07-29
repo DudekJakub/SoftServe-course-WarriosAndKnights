@@ -9,6 +9,7 @@ public interface Unit {
     enum UnitType {
         WARRIOR, KNIGHT, DEFENDER
     }
+
     static Unit newUnit(UnitType type) {
         return switch (type) {
             case WARRIOR -> new Warrior();
