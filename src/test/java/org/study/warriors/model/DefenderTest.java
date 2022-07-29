@@ -1,6 +1,8 @@
 package org.study.warriors.model;
 
 import org.junit.jupiter.api.Test;
+import org.study.warriors.model.Defender;
+import org.study.warriors.model.Warrior;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

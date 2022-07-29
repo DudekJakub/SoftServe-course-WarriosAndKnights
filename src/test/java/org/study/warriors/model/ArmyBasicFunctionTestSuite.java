@@ -1,4 +1,4 @@
-package org.study.warriors;
+package org.study.warriors.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
