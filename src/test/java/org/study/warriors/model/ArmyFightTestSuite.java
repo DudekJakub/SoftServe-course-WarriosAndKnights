@@ -53,4 +53,28 @@ class ArmyFightTestSuite {
         assertEquals(1, knightsAlive);
         assertEquals(0, warriorsAlive);
     }
+
+    @Test
+    @DisplayName("3. Battlefield: Warriors (attack) vs Defenders (defend) -> Defenders win")
+    void whenWarriorArmyAttackDefenderArmy_DefenderArmyWin() {
+        //Given
+        Army warriors = new Army();
+        Army defenders = new Army();
+        warriors.addUnits(Warrior::new, 3);
+        defenders.addUnits(Defender::new, 3);
+
+        //When
+        var armyBattleResult = Battle.fight(warriors, defenders);
+        var defendersAlive = defenders.getSoldiers().stream()
+                                                          .filter(IWarrior::isAlive)
+                                                          .count();
+        var warriorsAlive = warriors.getSoldiers().stream()
+                                                        .filter(IWarrior::isAlive)
+                                                        .count();
+
+        //Then
+        assertTrue(armyBattleResult);
+        assertEquals(1, defendersAlive);
+        assertEquals(0, warriorsAlive);
+    }
 }
