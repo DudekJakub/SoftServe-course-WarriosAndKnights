@@ -16,9 +16,9 @@ public class Army {
     /** Use of generic class(?) for invoking to type of unit we want to create and add to army. */
     public void addUnits(Class<? extends IWarrior> clazz, int quantity) {
         try {
-            var constructor = clazz.getDeclaredConstructor(); //we pull class constructor
+            var constructor = clazz.getDeclaredConstructor();
             for (int i = 0; i < quantity; i++) {
-                var o = constructor.newInstance(); //we create new object
+                var o = constructor.newInstance();
                 soldiers.add(o);
             }
         } catch (ReflectiveOperationException e) {
@@ -53,9 +53,16 @@ public class Army {
         return soldiers.size();
     }
 
+    public long getAliveSoldiers() {
+        return soldiers.stream()
+                       .filter(IWarrior::isAlive)
+                       .count();
+    }
+
     public List<IWarrior> getSoldiers() {
         return soldiers;
     }
+
 
     private class FirstAliveIterator implements Iterator<IWarrior> {
         int cursor = 0;
