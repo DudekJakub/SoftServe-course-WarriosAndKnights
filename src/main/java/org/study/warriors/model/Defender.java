@@ -1,6 +1,11 @@
 package org.study.warriors.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Defender extends Warrior {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Defender.class);
 
     static final int INITIAL_HEALTH = 60;
     static final int ATTACK = 3;
@@ -28,10 +33,7 @@ public class Defender extends Warrior {
 
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
-        var reducedDamage = damage - getDefense();
-
-        if (damage > getDefense()) {
-            setHealth(getHealth() - reducedDamage);
-        }
+        LOGGER.trace("Defender with {} defence tries to block damage {}", getDefense(), damage);
+        super.reduceHealthBasedOnDamage(Math.max(0, damage - getDefense()));
     }
 }

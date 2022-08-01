@@ -1,5 +1,7 @@
 package org.study.warriors.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.CanAttack;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
@@ -13,6 +15,8 @@ import org.study.warriors.model.interfaces.Unit;
 
 
 public class Warrior implements Unit, IWarrior, Cloneable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Warrior.class);
     static final int INITIAL_HEALTH = 50;
     static final int ATTACK = 5;
 
@@ -51,12 +55,14 @@ public class Warrior implements Unit, IWarrior, Cloneable {
      *  Thanks to that we are able to use IWarrior interface (polymorphism) and handle every Unit which is able to fight or at least HasHealth in similar way */
     @Override
     public void hit(IWarrior target) {
+        LOGGER.trace("{} hits {}", this, target);
         target.receiveDamage(this);
     }
 
 
-    /** This method use another interface 'CanAttack'. Thanks to that in future we would be able to define different value of damage depending on dmgDealer attack */
+    /** This method use another interface 'CanAttack'. Thanks to that in future we would be able to define different value of damage depending on dmgDealer's attack */
     public void receiveDamage(CanAttack damageDealer) {
+        LOGGER.trace("{} (victim) is receiving damage ({}) from {} (attacker)", this, damageDealer.getAttack(), damageDealer);
         reduceHealthBasedOnDamage(damageDealer.getAttack());
     }
 
@@ -65,13 +71,19 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
         setHealth(getHealth() - damage);
+        LOGGER.trace("{}'s (victim) HP has been reduced by {} and is equals to {}", this, damage, getHealth());
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
     }
 
     public Warrior shallowClone() {
         try {
             return (Warrior) super.clone();
         } catch (CloneNotSupportedException ignored) {
-            //ignored
+            System.out.println("This message will never be printed");
         }
         return null;
     }
