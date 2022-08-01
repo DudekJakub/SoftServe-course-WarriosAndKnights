@@ -2,8 +2,9 @@ package org.study.warriors.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.study.warriors.model.interfaces.CanDefense;
 
-public class Defender extends Warrior {
+public class Defender extends Warrior implements CanDefense {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Defender.class);
 
