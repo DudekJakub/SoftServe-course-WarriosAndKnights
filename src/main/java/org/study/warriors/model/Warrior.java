@@ -22,6 +22,7 @@ public class Warrior implements Unit, IWarrior, Cloneable {
 
     private int health;
     private int attack;
+    private int lastReceivedDamage = 0;
 
     public Warrior() {
         this(INITIAL_HEALTH, ATTACK);
@@ -38,6 +39,16 @@ public class Warrior implements Unit, IWarrior, Cloneable {
 
     public int getHealth() {
         return health;
+    }
+
+    @Override
+    public int getLastReceivedDamage() {
+        return lastReceivedDamage;
+    }
+
+    @Override
+    public void setLastReceivedDamage(int damage) {
+        this.lastReceivedDamage = damage;
     }
 
     public void setAttack(int newAttack) {
@@ -71,7 +82,8 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
         setHealth(getHealth() - damage);
-        LOGGER.trace("{}'s (victim) HP has been reduced by {} and is equals to {}", this, damage, getHealth());
+        setLastReceivedDamage(damage);
+        LOGGER.trace("{}'s (victim) HP has been reduced by {} and is equals to {} | final damage taken = {}", this, damage, getHealth(), damage);
     }
 
     @Override
