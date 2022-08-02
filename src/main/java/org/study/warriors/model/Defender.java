@@ -34,7 +34,9 @@ public class Defender extends Warrior implements CanDefense {
 
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
-        LOGGER.trace("Defender with {} defence tries to block damage {}", getDefense(), damage);
-        super.reduceHealthBasedOnDamage(Math.max(0, damage - getDefense()));
+        var finalReceivedDamage = damage - getDefense();
+        LOGGER.trace("Defender with {} defence blocks damage {} (damage - defense = {} - {})", getDefense(), damage, damage, getDefense());
+        super.reduceHealthBasedOnDamage(Math.max(0, finalReceivedDamage));
+        setLastReceivedDamage(finalReceivedDamage);
     }
 }
