@@ -1,8 +1,6 @@
 
 b
 2src/main/java/org/study/warriors/model/Knight.java,8\1\8120b3e685f9d2c820690dde7e725da51c6f8255
-p
-@src/main/java/org/study/warriors/model/interfaces/HasHealth.java,e\7\e7aef6197b82118d492afd8fecfead245637995b
 o
 ?src/main/java/org/study/warriors/model/interfaces/IWarrior.java,7\3\73e50d46497b9f6f0050fc3f0933f29b583713f4
 p
@@ -17,11 +15,13 @@ k
 ;src/main/java/org/study/warriors/model/interfaces/Unit.java,c\7\c7d1622592280c4c41a95a71054d91da76ae38da
 v
 Fsrc/test/java/org/study/warriors/model/ArmyBasicFunctionTestSuite.java,e\c\ec4ac092993c8f09c9bd6a89423a96f94447efa6
-i
-9src/test/java/org/study/warriors/model/ArmyTestSuite.java,4\5\458979da810183b23136c1ea9162ac49a92f9774
-h
-8src/test/java/org/study/warriors/model/DefenderTest.java,c\d\cd809d9031bdf22b4db4bc73c6c466fd5a6c824b
-n
->src/test/java/org/study/warriors/model/DuelFightTestSuite.java,1\f\1fdd8185fa217b46b20536124589fd5c4bb09f13
 g
 7src/test/java/org/study/warriors/model/WarriorTest.java,b\0\b0be78a98395115e37f53c4921f0affdbbdb4ee0
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+d
+4src/main/java/org/study/warriors/service/Battle.java,0\3\03ff64702695161b657eb77112a2b509fe43bc65
+`
+0src/main/java/org/study/warriors/model/Army.java,e\a\eaf54661eb2751568d7264e328218ada1a8283b5
+n
+>src/test/java/org/study/warriors/model/ArmyFightTestSuite.java,d\9\d98d6196f651830d898c6f7528d0fd73216e0a7d
