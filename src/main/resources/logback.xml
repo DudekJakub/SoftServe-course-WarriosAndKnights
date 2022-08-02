@@ -11,8 +11,9 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="org.study.warriors.model.Warrior" level="debug"/>
-    <logger name="org.study.warriors.model.Defender" level="debug"/>
+    <logger name="org.study.warriors.model.Warrior" level="trace"/>
+    <logger name="org.study.warriors.model.Defender" level="trace"/>
+    <logger name="org.study.warriors.model.Vampire" level="trace"/>
 
 </configuration>
 
