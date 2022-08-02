@@ -21,7 +21,5 @@ i
 9src/test/java/org/study/warriors/model/ArmyTestSuite.java,4\5\458979da810183b23136c1ea9162ac49a92f9774
 h
 8src/test/java/org/study/warriors/model/DefenderTest.java,c\d\cd809d9031bdf22b4db4bc73c6c466fd5a6c824b
-n
->src/test/java/org/study/warriors/model/DuelFightTestSuite.java,1\f\1fdd8185fa217b46b20536124589fd5c4bb09f13
 g
 7src/test/java/org/study/warriors/model/WarriorTest.java,b\0\b0be78a98395115e37f53c4921f0affdbbdb4ee0
