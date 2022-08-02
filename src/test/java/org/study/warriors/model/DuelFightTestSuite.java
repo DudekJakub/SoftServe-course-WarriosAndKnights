@@ -27,39 +27,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("1. Single Hit By Warrior: Knight should lose 5 HP")
-    void whenWarriorHitsKnight_KnightShouldLoseFiveHp() {
-        //Given
-        var warrior = new Warrior();
-        var knight = new Knight();
-        var knightInitialHealthPoints = knight.getHealth();
-
-        //When
-        warrior.hit(knight);
-        var knightReducedHealthPoints = knight.getHealth();
-
-        //Then
-        assertEquals(5, knightInitialHealthPoints - knightReducedHealthPoints);
-    }
-
-    @Test
-    @DisplayName("2. Single Hit By Knight: Warrior should lose 7 HP")
-    void whenKnightHitsWarrior_WarriorShouldLoseSevenHp() {
-        //Given
-        var knight = new Knight();
-        var warrior = new Warrior();
-        var warriorInitialHealthPoints = warrior.getHealth();
-
-        //When
-        knight.hit(warrior);
-        var warriorReducedHealthPoints = warrior.getHealth();
-
-        //Then
-        assertEquals(7, warriorInitialHealthPoints - warriorReducedHealthPoints);
-    }
-
-    @Test
-    @DisplayName("3. Fight: Warrior defends himself against knight and should fail & die")
+    @DisplayName("1. Fight: Warrior defends himself against knight and should fail & die")
     void whenWarriorDefendsHimselfVsKnight_WarriorShouldFailAndDie() {
         //Given
         var warrior = new Warrior();
@@ -75,7 +43,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("4. Fight: Knight defends himself against warrior and should win & stay alive")
+    @DisplayName("2. Fight: Knight defends himself against warrior and should win & stay alive")
     void whenKnightDefendsHimselfVsWarrior_KnightShouldWinAndStayAlive() {
         //Given
         var knight = new Knight();
@@ -91,7 +59,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("5. Fight: Warrior attack knight and should fail & die")
+    @DisplayName("3. Fight: Warrior attacks knight and should fail & die")
     void whenWarriorAttacksKnight_WarriorShouldFailAndDie() {
         //Given
         var warrior = new Warrior();
@@ -107,7 +75,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("6. Fight: Knight attacks warrior and should win & stay alive")
+    @DisplayName("4. Fight: Knight attacks warrior and should win & stay alive")
     void whenKnightAttacksWarrior_KnightShouldWinAndStayAlive() {
         //Given
         var knight = new Knight();
@@ -123,7 +91,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("7. Fight: Warrior attacks warrior and second one should be dead")
+    @DisplayName("5. Fight: Warrior attacks warrior and second one should be dead")
     void whenWarriorAttacksWarrior_BothShouldBeDead() {
         //Given
         var warrior1 = new Warrior();
@@ -140,7 +108,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("8. Fight: Knight attacks knight and second one should be dead")
+    @DisplayName("6. Fight: Knight attacks knight and second one should be dead")
     void whenKnightAttacksKnight_BothShouldBeDead() {
         //Given
         var knight1 = new Knight();
@@ -157,7 +125,7 @@ class DuelFightTestSuite {
     }
 
     @Test
-    @DisplayName("9. Fight: Rookie attack defender and second one shouldn't lose any HP")
+    @DisplayName("7. Fight: Rookie attacks defender and second one shouldn't lose any HP")
     void whenRookieAttacksDefender_DefenderShouldNotLoseAnyHp() {
         //Given
         var rookie = new Rookie();
@@ -175,6 +143,25 @@ class DuelFightTestSuite {
         assertTrue(isDefenderAlive);
         assertEquals(defenderHealthBeforeFight, defenderHealthAfterFight);
     }
+
+    @Test
+    @DisplayName("8. Fight: Vampire attacks defender and should be dead")
+    void whenVampireAttacksDefender_VampireShouldWinTheDuel() {
+        //Given
+        var vampire = new Vampire();
+        var defender = new Defender();
+
+        //When
+        var battleResult = Battle.fight(vampire, defender);
+        var isVampireAlive = vampire.isAlive();
+        var isDefenderAlive = defender.isAlive();
+
+        //Then
+        assertTrue(battleResult);
+        assertFalse(isVampireAlive);
+        assertTrue(isDefenderAlive);
+    }
+
 
     private static class Rookie extends Warrior {
         @Override
