@@ -14,22 +14,19 @@ public class Battle {
     }
 
     public static boolean fight(IWarrior attacker, IWarrior defender) {
-        LOGGER.debug("Duel between {} (AP {} | HP {}) and {} (AP {} | HP {}) begins!",
-                      attacker, attacker.getAttack(), attacker.getHealth(), defender, defender.getAttack(), defender.getHealth());
+        LOGGER.debug("Duel between {} (AP {} | HP {}) and {} (AP {} | HP {}) begins!", attacker, attacker.getAttack(), attacker.getHealth(), defender, defender.getAttack(), defender.getHealth());
 
         while (attacker.isAlive() && defender.isAlive()) {
             attacker.hit(defender);
             if (!defender.isAlive()) {
-                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!",
-                              attacker, attacker.getHealth(), defender, defender.getHealth());
-                return defender.isAlive();
+                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker, attacker.getHealth(), defender, defender.getHealth());
+                return attacker.isAlive();
             } else {
                 defender.hit(attacker);
             }
         }
-        LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!",
-                      attacker, attacker.getHealth(), defender, defender.getHealth());
-        return defender.isAlive();
+        LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker, attacker.getHealth(), defender, defender.getHealth());
+        return attacker.isAlive();
     }
 
     /** We assigned two variables which reference to our Iterator method. This method gives us firstAlive unit.
@@ -45,6 +42,6 @@ public class Battle {
             LOGGER.debug("Alive soldiers: AttackerSide = {} | DefenderSide = {}\n", attackers.getAliveSoldiers(), defenders.getAliveSoldiers());
         }
         LOGGER.debug("ArmyBattle has ended!");
-        return it2.hasNext();
+        return it1.hasNext();
     }
 }
