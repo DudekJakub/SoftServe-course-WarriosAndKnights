@@ -1,13 +1,11 @@
 package org.study.warriors.model.interfaces;
 
-import org.study.warriors.model.Defender;
-import org.study.warriors.model.Knight;
-import org.study.warriors.model.Warrior;
+import org.study.warriors.model.*;
 
 public interface Unit {
 
     enum UnitType {
-        WARRIOR, KNIGHT, DEFENDER
+        WARRIOR, KNIGHT, DEFENDER, VAMPIRE, LANCER, HEALER
     }
 
     static Unit newUnit(UnitType type) {
@@ -15,6 +13,9 @@ public interface Unit {
             case WARRIOR -> new Warrior();
             case KNIGHT -> new Knight();
             case DEFENDER -> new Defender();
+            case VAMPIRE -> new Vampire();
+            case LANCER -> new Lancer();
+            case HEALER -> new Healer();
         };
     }
 }
