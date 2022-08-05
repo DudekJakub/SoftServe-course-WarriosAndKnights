@@ -88,7 +88,39 @@ public class SingleHitTestSuite {
     }
 
     @Test
-    @DisplayName("6. Single Hit By Vampire: Warrior should lose 4 HP")
+    @DisplayName("6. Single Hit Received By Defender: Defender attacked by Knight should lose 5 HP")
+    void whenKnightHitDefender_DefenderLoseFiveHp() {
+        //Given
+        var knight = new Knight();
+        var defender = new Defender();
+        var defenderHealthBeforeHit = defender.getHealth();
+
+        //When
+        knight.hit(defender);
+        var defenderHealthAfterHit = defender.getHealth();
+
+        //Then
+        assertEquals(5, defenderHealthBeforeHit - defenderHealthAfterHit);
+    }
+
+    @Test
+    @DisplayName("7. Single Hit Received By Defender: Defender attacked by Vampire should lose 2 HP")
+    void whenVampireHitDefender_DefenderLoseTwoHp() {
+        //Given
+        var vampire = new Vampire();
+        var defender = new Defender();
+        var defenderHealthBeforeHit = defender.getHealth();
+
+        //When
+        vampire.hit(defender);
+        var defenderHealthAfterHit = defender.getHealth();
+
+        //Then
+        assertEquals(2, defenderHealthBeforeHit - defenderHealthAfterHit);
+    }
+
+    @Test
+    @DisplayName("8. Single Hit By Vampire: Warrior should lose 4 HP")
     void whenVampireHitsWarrior_WarriorShouldLoseFourHp() {
         //Given
         var vampire = new Vampire();
@@ -104,7 +136,7 @@ public class SingleHitTestSuite {
     }
 
     @Test
-    @DisplayName("7. Single Hit By Wounded Vampire: Vampire should drain life in value of 50% of his attack")
+    @DisplayName("9. Single Hit By Wounded Vampire: Vampire should drain life in value of 50% of his attack")
     void whenWoundedVampireHitsWarrior_VampireShouldDrainLifeInValueOfHisHalfAttack() {
         //Given
         var vampire = new Vampire();
@@ -120,7 +152,7 @@ public class SingleHitTestSuite {
     }
 
     @Test
-    @DisplayName("8. Single Hit By Wounded Vampire: Vampire should drain life in value of 50% of his attack reduced by defender's defense")
+    @DisplayName("10. Single Hit By Wounded Vampire: Vampire should drain life in value of 50% of his attack reduced by defender's defense")
     void whenWoundedVampireHitsDefender_VampireShouldDrainLifeInValueOfHisHalfAttackReducedByDefense() {
         //Given
         var vampire = new Vampire();
@@ -136,7 +168,7 @@ public class SingleHitTestSuite {
     }
 
     @Test
-    @DisplayName("9. Single Hit By Full Health Vampire: Vampire shouldn't have more life after then his initial HP")
+    @DisplayName("11. Single Hit By Full Health Vampire: Vampire shouldn't have more life after then his initial HP")
     void whenFullHpVampireHitsEnemy_VampireShouldNotCrossedHisInitialHealthWhileDrainingLife() {
         //Given
         var vampire = new Vampire();
@@ -149,6 +181,23 @@ public class SingleHitTestSuite {
 
         //Then
         assertEquals(vampireInitialHealth, vampireHealthAfterHit);
+    }
+
+    @Test
+    @DisplayName("12. Single Hit By Wounded Vampire to 1 HP Warrior: Vampire should heal himself by 2 HP despite of Warrior's negative HP after hit")
+    void whenWoundedVampireHitsOneHitEnemy_VampireShouldHealsHimselfAsNormal() {
+        //Given
+        var vampire = new Vampire();
+        var warrior = new Warrior();
+        vampire.setHealth(30);
+        warrior.setHealth(1);
+
+        //When
+        vampire.hit(warrior);
+        var vampireHealthAfterHit = vampire.getHealth();
+
+        //Then
+        assertEquals(32 ,vampireHealthAfterHit);
     }
 
     private static class Rookie extends Warrior {

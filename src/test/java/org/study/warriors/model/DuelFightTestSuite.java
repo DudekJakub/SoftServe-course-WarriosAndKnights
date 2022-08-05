@@ -19,7 +19,7 @@ class DuelFightTestSuite {
 
         //When & Then
         assertFalse(Battle.fight(chuck, bruce));
-        assertTrue(Battle.fight(dave, carl));
+        assertFalse(Battle.fight(dave, carl));
         assertTrue(chuck.isAlive());
         assertFalse(bruce.isAlive());
         assertTrue(carl.isAlive());
@@ -54,7 +54,7 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        assertTrue(battleResult);
+        assertFalse(battleResult);
         assertTrue(isKnightAlive);
     }
 
@@ -70,7 +70,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        assertTrue(battleResult);
+        assertFalse(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -157,11 +157,46 @@ class DuelFightTestSuite {
         var isDefenderAlive = defender.isAlive();
 
         //Then
-        assertTrue(battleResult);
+        assertFalse(battleResult);
         assertFalse(isVampireAlive);
         assertTrue(isDefenderAlive);
     }
 
+    @Test
+    @DisplayName("9. Fight: Vampire attacks warrior and should win & stay alive")
+    void whenVampireAttacksWarrior_VampireShouldWinTheDuel() {
+        //Given
+        var vampire = new Vampire();
+        var warrior = new Warrior();
+
+        //When
+        var battleResult = Battle.fight(vampire, warrior);
+        var isVampireAlive = vampire.isAlive();
+        var isWarriorAlive = warrior.isAlive();
+
+        //Then
+        assertFalse(battleResult);
+        assertTrue(isVampireAlive);
+        assertFalse(isWarriorAlive);
+    }
+
+    @Test
+    @DisplayName("9. Fight: Vampire attacks vampire the attacker Vampire should win")
+    void whenVampireAttacksVampire_FirstVampire() {
+        //Given
+        var vampire1 = new Vampire();
+        var vampire2 = new Vampire();
+
+        //When
+        var battleResult = Battle.fight(vampire1, vampire2);
+        var isVampire1Alive = vampire1.isAlive();
+        var isVampire2Alive = vampire2.isAlive();
+
+        //Then
+        assertTrue(battleResult);
+        assertTrue(isVampire1Alive);
+        assertFalse(isVampire2Alive);
+    }
 
     private static class Rookie extends Warrior {
         @Override
