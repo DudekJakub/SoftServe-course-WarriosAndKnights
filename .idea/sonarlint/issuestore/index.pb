@@ -1,8 +1,4 @@
 
-b
-2src/main/java/org/study/warriors/model/Knight.java,8\1\8120b3e685f9d2c820690dde7e725da51c6f8255
-o
-?src/main/java/org/study/warriors/model/interfaces/IWarrior.java,7\3\73e50d46497b9f6f0050fc3f0933f29b583713f4
 p
 @src/main/java/org/study/warriors/model/interfaces/CanAttack.java,7\7\77fb7ebea78cdbea2083adf4590f7fa107a0967b
 l
@@ -11,17 +7,3 @@ b
 2src/main/java/org/study/practice/InfGenerator.java,6\3\6391b74dcd9ff71c2b6cb10d9dd97b3a5376488c
 k
 ;src/main/java/org/study/practice/FibonacciLongApproach.java,b\e\befe2c39b338c67125f0b2caba012f20b280fd14
-k
-;src/main/java/org/study/warriors/model/interfaces/Unit.java,c\7\c7d1622592280c4c41a95a71054d91da76ae38da
-v
-Fsrc/test/java/org/study/warriors/model/ArmyBasicFunctionTestSuite.java,e\c\ec4ac092993c8f09c9bd6a89423a96f94447efa6
-g
-7src/test/java/org/study/warriors/model/WarriorTest.java,b\0\b0be78a98395115e37f53c4921f0affdbbdb4ee0
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-d
-4src/main/java/org/study/warriors/service/Battle.java,0\3\03ff64702695161b657eb77112a2b509fe43bc65
-`
-0src/main/java/org/study/warriors/model/Army.java,e\a\eaf54661eb2751568d7264e328218ada1a8283b5
-n
->src/test/java/org/study/warriors/model/ArmyFightTestSuite.java,d\9\d98d6196f651830d898c6f7528d0fd73216e0a7d
