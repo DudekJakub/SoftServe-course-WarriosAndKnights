@@ -2,11 +2,9 @@ package org.study.warriors.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.study.warriors.model.interfaces.CanAttack;
-import org.study.warriors.model.interfaces.IWarrior;
-import org.study.warriors.model.interfaces.Unit;
+import org.study.warriors.model.interfaces.*;
 
-/** Skeleton class for all fighters (so far 29/07).
+/** Skeleton class for all fighters (so far 04/08).
  *  Main function is dealing and receiving damage:
  *      1) hit -> this method uses receiveDamage() on the target
  *      2) receiveDamage -> ^^ uses reduceHealthBasedOnDamage() to decrease amount of target's health
@@ -14,7 +12,7 @@ import org.study.warriors.model.interfaces.Unit;
  **/
 
 
-public class Warrior implements Unit, IWarrior, Cloneable {
+public class Warrior implements Unit, IWarrior, Cloneable, RequestProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Warrior.class);
     static final int INITIAL_HEALTH = 50;
@@ -23,6 +21,8 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     private int health;
     private int attack;
     private int lastReceivedDamage = 0;
+    private Chain nextInChain;
+    private Chain previousInChain;
 
     public Warrior() {
         this(INITIAL_HEALTH, ATTACK);
@@ -38,7 +38,17 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     }
 
     public int getHealth() {
-        return health;
+        return this.health;
+    }
+
+    @Override
+    public int getInitialHealth() {
+        return INITIAL_HEALTH;
+    }
+
+    @Override
+    public Chain getNextInChain() {
+        return nextInChain;
     }
 
     @Override
@@ -46,13 +56,21 @@ public class Warrior implements Unit, IWarrior, Cloneable {
         return lastReceivedDamage;
     }
 
+    public void setAttack(int newAttack) {
+        this.attack = newAttack;
+    }
+
+    public Chain getPreviousInChain() {
+        return previousInChain;
+    }
+
+    public void setPreviousInChain(Chain previousInChain) {
+        this.previousInChain = previousInChain;
+    }
+
     @Override
     public void setLastReceivedDamage(int damage) {
         this.lastReceivedDamage = damage;
-    }
-
-    public void setAttack(int newAttack) {
-        this.attack = newAttack;
     }
 
 
@@ -68,6 +86,7 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     public void hit(IWarrior target) {
         LOGGER.trace("{} hits {}", this, target);
         target.receiveDamage(this);
+        makeRequest(this, new RequestHealerCureAlly());
     }
 
 
@@ -84,6 +103,44 @@ public class Warrior implements Unit, IWarrior, Cloneable {
         setHealth(getHealth() - damage);
         setLastReceivedDamage(damage);
         LOGGER.trace("{}'s (victim) HP has been reduced by {} and is equals to {} | final damage taken = {}", this, damage, getHealth(), damage);
+    }
+
+    @Override
+    public void enlargeHealthBasedOnHeal(int heal) {
+        setHealth(Math.min(INITIAL_HEALTH, getHealth() + heal));
+        LOGGER.trace("{} has been healed by {}", this, heal);
+    }
+
+    @Override
+    public void setNextInChain(Chain nextInChain) {
+        this.nextInChain = nextInChain;
+    }
+
+    @Override
+    public void makeRequest(IWarrior target, Request request) {
+        LOGGER.trace(Request.REQUEST_SENDING_ATTEMPT, this, request.REQUEST_CLASS_NAME);
+        if (target.getNextInChain() != null) {
+            LOGGER.trace(Request.REQUEST_SENT, this, request.REQUEST_CLASS_NAME);
+            target.getNextInChain().handleRequest(request);
+        } else {
+            LOGGER.trace(Request.REQUEST_ENDED, request.REQUEST_CLASS_NAME);
+        }
+    }
+
+    @Override
+    public void handleRequest(Request request) {
+
+        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled() && !request.isRequestAlreadyHandledByHandler(this)) {
+            LOGGER.trace("{} (next in line) is handling the request (PIERCE ATTACK)...", this);
+            setHealth(getHealth() - requestLPA.getPierceDamage());
+            requestLPA.addHandlerToCheckSet(this);
+            LOGGER.trace("PIERCE ATTACK request processed! {} has received pierce damage {} from Lancer and its actual HP = {}",
+                                                                                                 this, requestLPA.getPierceDamage(), getHealth());
+        } else if (nextInChain != null && request.isNotFullyHandled()) {
+            nextInChain.handleRequest(request);
+        } else {
+            LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize());
+        }
     }
 
     @Override
