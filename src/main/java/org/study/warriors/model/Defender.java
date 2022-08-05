@@ -33,10 +33,29 @@ public class Defender extends Warrior implements CanDefense {
     }
 
     @Override
+    public int getInitialHealth() {
+        return INITIAL_HEALTH;
+    }
+
+    @Override
     public void reduceHealthBasedOnDamage(int damage) {
         var finalReceivedDamage = damage - getDefense();
         LOGGER.trace("Defender with {} defence blocks damage {} (damage - defense = {} - {})", getDefense(), damage, damage, getDefense());
         super.reduceHealthBasedOnDamage(Math.max(0, finalReceivedDamage));
         setLastReceivedDamage(finalReceivedDamage);
+    }
+
+    @Override
+    public void handleRequest(Request request) {
+
+        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled() && !request.isRequestAlreadyHandledByHandler(this)) {
+            LOGGER.trace("{} (next in line) is handling the request (PIERCE ATTACK)...", this);
+            setHealth(getHealth() - (requestLPA.getPierceDamage() - getDefense()));
+            requestLPA.addHandlerToCheckSet(this);
+            LOGGER.trace("PIERCE ATTACK request processed! {} has received pierce damage {} (respectively blocked) from Lancer and its actual HP = {}",
+                                                                                                         this, requestLPA.getPierceDamage() - getDefense(), getHealth());
+        } else {
+            super.handleRequest(request);
+        }
     }
 }

@@ -11,4 +11,9 @@ public class Knight extends Warrior {
     public int getAttack() {
         return ATTACK;
     }
+
+    @Override
+    public int getInitialHealth() {
+        return INITIAL_HEALTH;
+    }
 }

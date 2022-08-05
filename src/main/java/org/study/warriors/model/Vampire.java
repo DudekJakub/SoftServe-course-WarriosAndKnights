@@ -30,19 +30,24 @@ public class Vampire extends Warrior implements IVampire {
     }
 
     @Override
+    public int getInitialHealth() {
+        return INITIAL_HEALTH;
+    }
+
+    @Override
     public int getVampirism() {
-        return VAMPIRISM;
+        return vampirism;
     }
 
     @Override
     public void hit(IWarrior target) {
         super.hit(target);
-        drainLifeBasedOnAttack(target);
+        drainLifeBasedOnDealtAttack(target);
     }
 
     @Override
-    public void drainLifeBasedOnAttack(IWarrior target) {
-        var healthValueAfterDrainLife = getHealth() + ((target.getLastReceivedDamage() * getVampirism())/100);
+    public void drainLifeBasedOnDealtAttack(IWarrior target) {
+        var healthValueAfterDrainLife = getHealth() > 0 ? getHealth() + ((target.getLastReceivedDamage() * getVampirism())/100) : 0;
         setHealth(Math.min(INITIAL_HEALTH, healthValueAfterDrainLife));
         LOGGER.trace("{} drains life from his final damage dealt ({}) and heals himself by ({} * {})/100, new HP = {}", this, target.getLastReceivedDamage(), target.getLastReceivedDamage(), getVampirism(), getHealth());
     }
