@@ -6,6 +6,8 @@ import org.study.warriors.model.interfaces.Unit;
 import java.util.*;
 import java.util.function.Supplier;
 
+    /** By returning Army in each addUnit type of method we are able to use so-called fluent interface */
+
 public class Army {
     private final List<IWarrior> soldiers = new ArrayList<>();
 
@@ -13,17 +15,25 @@ public class Army {
         return new FirstAliveIterator();
     }
 
+    public Army addSingleUnit(IWarrior warrior) {
+        soldiers.add(warrior);
+        assignSoldierPositionInChain(this);
+        return this;
+    }
+
     /** Use of generic class(?) for invoking to type of unit we want to create and add to army. */
-    public void addUnits(Class<? extends IWarrior> clazz, int quantity) {
+    public Army addUnits(Class<? extends IWarrior> clazz, int quantity) {
         try {
             var constructor = clazz.getDeclaredConstructor();
             for (int i = 0; i < quantity; i++) {
                 var o = constructor.newInstance();
                 soldiers.add(o);
             }
+            assignSoldierPositionInChain(this);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
+        return this;
     }
 
 
@@ -32,6 +42,7 @@ public class Army {
         for (int i = 0; i < quantity; i++) {
             soldiers.add((IWarrior) Unit.newUnit(type));
         }
+        assignSoldierPositionInChain(this);
     }
 
     /** Use of Functional Interface - Supplier. Its method 'get' generates new Warrior object. */
@@ -39,6 +50,7 @@ public class Army {
         for (int i = 0; i < quantity; i++) {
             soldiers.add(factory.get());
         }
+        assignSoldierPositionInChain(this);
         return this;
     }
 
@@ -47,6 +59,7 @@ public class Army {
         for (int i = 0; i < quantity; i++) {
             soldiers.add(prototype.shallowClone());
         }
+        assignSoldierPositionInChain(this);
     }
 
     public int getArmySize() {
@@ -59,10 +72,20 @@ public class Army {
                        .count();
     }
 
-    public List<IWarrior> getSoldiers() {
-        return soldiers;
-    }
+    private void assignSoldierPositionInChain(Army army) {
+        var soldiers = army.soldiers;
+        for (int i = 0; i < army.soldiers.size(); i++) {
+            var soldier = soldiers.get(i);
 
+            if (i < army.soldiers.size() - 1) {
+                var soldierBehind = soldiers.get(i + 1);
+                soldier.setNextInChain(soldierBehind);
+            } else if (i > 0) {
+                var soldierInFront = soldiers.get(i - 1);
+                soldier.setPreviousInChain(soldierInFront);
+            }
+        }
+    }
 
     private class FirstAliveIterator implements Iterator<IWarrior> {
         int cursor = 0;
