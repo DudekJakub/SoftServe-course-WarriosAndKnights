@@ -18,7 +18,7 @@ class DuelFightTestSuite {
         var dave = new Warrior();
 
         //When & Then
-        assertFalse(Battle.fight(chuck, bruce));
+        assertTrue(Battle.fight(chuck, bruce));
         assertFalse(Battle.fight(dave, carl));
         assertTrue(chuck.isAlive());
         assertFalse(bruce.isAlive());
@@ -38,7 +38,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        assertFalse(battleResult);
+        assertTrue(battleResult);
         assertFalse(isWarriorAlive);
     }
 
@@ -86,7 +86,7 @@ class DuelFightTestSuite {
         var isKnightAlive = knight.isAlive();
 
         //Then
-        assertFalse(battleResult);
+        assertTrue(battleResult);
         assertTrue(isKnightAlive);
     }
 
@@ -175,7 +175,7 @@ class DuelFightTestSuite {
         var isWarriorAlive = warrior.isAlive();
 
         //Then
-        assertFalse(battleResult);
+        assertTrue(battleResult);
         assertTrue(isVampireAlive);
         assertFalse(isWarriorAlive);
     }

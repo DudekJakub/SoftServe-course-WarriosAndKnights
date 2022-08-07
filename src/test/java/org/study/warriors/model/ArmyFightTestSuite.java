@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.service.Battle;
 
@@ -333,6 +332,8 @@ class ArmyFightTestSuite {
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, defenderAndHealerArmy);
+        System.out.println(defender1FromSecondArmy.getHealth());
+        System.out.println(defender2FromSecondArmy.getHealth());
 
 
         //Then
