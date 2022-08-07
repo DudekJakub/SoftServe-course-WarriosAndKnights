@@ -38,18 +38,17 @@ public class Healer extends Warrior implements CanHeal {
     @Override
     public void handleRequest(Request request) {
 
-        IWarrior allyInFront = (IWarrior) getPreviousInChain();
-
-        if (request instanceof RequestHealerCureAlly requestHHA && !request.isRequestAlreadyHandledByHandler(this)) {
-            LOGGER.trace("{} (next in line) is handling the request (HEAL ALLY IN FRONT)...", this);
-            if (allyInFront.getHealth() < allyInFront.getInitialHealth()) {
-                healAlly(allyInFront);
-                LOGGER.trace("HEAL ALLY request processed!");
-            } else {
-                LOGGER.trace("HEAL ALLY request processed but {} (previous in line) has already full HP", allyInFront);
-            }
+        if (request instanceof RequestHealerCureAlly requestHHA) {
+            LOGGER.trace("{} (next in line) is handling the request HEAL ALLY...", this);
+            heal((IWarrior) getPreviousInChain());
             requestHHA.addHandlerToCheckSet(this);
-            if (getNextInChain() != null) passRequest(allyInFront, request);
+            LOGGER.trace("HEAL ALLY request processed!");
+
+            if (getNextInChain() != null) {
+                passRequest(getNextInChain(), request);
+            } else {
+                LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize() > 0 ? request.getHandlersSize() : Request.REQUEST_HANDLED_BY_NO_ONE);
+            }
         } else {
             super.handleRequest(request);
         }

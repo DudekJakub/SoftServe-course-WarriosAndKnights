@@ -29,6 +29,6 @@ public class Lancer extends Warrior implements RequestProvider {
     @Override
     public void hit(IWarrior target) {
         super.hit(target);
-        makeRequest(target, new RequestLancerPierceAttack());
+        makeRequest(new RequestLancerPierceAttack(target));
     }
 }

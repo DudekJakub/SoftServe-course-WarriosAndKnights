@@ -40,7 +40,7 @@ public class Defender extends Warrior implements CanDefense {
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
         var finalReceivedDamage = damage - getDefense();
-        LOGGER.trace("Defender with {} defence blocks damage {} (damage - defense = {} - {})", getDefense(), damage, damage, getDefense());
+        LOGGER.trace("Defender with {} defence blocks damage {} | DMG = {}", getDefense(), damage, damage - getDefense());
         super.reduceHealthBasedOnDamage(Math.max(0, finalReceivedDamage));
         setLastReceivedDamage(finalReceivedDamage);
     }
@@ -48,12 +48,17 @@ public class Defender extends Warrior implements CanDefense {
     @Override
     public void handleRequest(Request request) {
 
-        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled() && !request.isRequestAlreadyHandledByHandler(this)) {
-            LOGGER.trace("{} (next in line) is handling the request (PIERCE ATTACK)...", this);
-            setHealth(getHealth() - (requestLPA.getPierceDamage() - getDefense()));
-            requestLPA.addHandlerToCheckSet(this);
-            LOGGER.trace("PIERCE ATTACK request processed! {} has received pierce damage {} (respectively blocked) from Lancer and its actual HP = {}",
-                                                                                                         this, requestLPA.getPierceDamage() - getDefense(), getHealth());
+        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled()) {
+            LOGGER.trace("{} (next in line) is handling the request DEAL PIERCE ATTACK...", this);
+            var pierceDamage = requestLPA.getPierceDamageForHandler(this);
+            setHealth(getHealth() - (pierceDamage - getDefense()));
+            LOGGER.trace("DEAL PIERCE ATTACK request processed! {} has received pierce damage {} (respectively blocked) from Lancer | HP = {}", this, pierceDamage - getDefense(), getHealth());
+
+            if (getNextInChain() != null && request.isNotFullyHandled()) {
+                passRequest(getNextInChain(), request);
+            } else {
+                LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize() > 0 ? request.getHandlersSize() : Request.REQUEST_HANDLED_BY_NO_ONE);
+            }
         } else {
             super.handleRequest(request);
         }

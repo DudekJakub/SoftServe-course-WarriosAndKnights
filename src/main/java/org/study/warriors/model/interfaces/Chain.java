@@ -8,7 +8,7 @@ public interface Chain {
     void handleRequest(Request request);
     Chain getNextInChain();
 
-    default void passRequest(IWarrior target, Request request) {
+    default void passRequest(Chain target, Request request) {
         target.handleRequest(request);
     }
 }

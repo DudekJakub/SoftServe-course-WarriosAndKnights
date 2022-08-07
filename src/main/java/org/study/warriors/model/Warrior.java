@@ -86,13 +86,14 @@ public class Warrior implements Unit, IWarrior, Cloneable, RequestProvider {
     public void hit(IWarrior target) {
         LOGGER.trace("{} hits {}", this, target);
         target.receiveDamage(this);
-        makeRequest(this, new RequestHealerCureAlly());
+        makeRequest(new RequestHealerCureAlly(this));
     }
 
 
     /** This method use another interface 'CanAttack'. Thanks to that in future we would be able to define different value of damage depending on dmgDealer's attack */
+    @Override
     public void receiveDamage(CanAttack damageDealer) {
-        LOGGER.trace("{} (victim) is receiving damage ({}) from {} (attacker)", this, damageDealer.getAttack(), damageDealer);
+        LOGGER.trace("{} (victim) is receiving damage {} from {} (attacker)", this, damageDealer.getAttack(), damageDealer);
         reduceHealthBasedOnDamage(damageDealer.getAttack());
     }
 
@@ -102,7 +103,7 @@ public class Warrior implements Unit, IWarrior, Cloneable, RequestProvider {
     public void reduceHealthBasedOnDamage(int damage) {
         setHealth(getHealth() - damage);
         setLastReceivedDamage(damage);
-        LOGGER.trace("{}'s (victim) HP has been reduced by {} and is equals to {} | final damage taken = {}", this, damage, getHealth(), damage);
+        LOGGER.trace("{}'s (victim) HP has been reduced by {}", this, damage);
     }
 
     @Override
@@ -117,29 +118,19 @@ public class Warrior implements Unit, IWarrior, Cloneable, RequestProvider {
     }
 
     @Override
-    public void makeRequest(IWarrior target, Request request) {
-        LOGGER.trace(Request.REQUEST_SENDING_ATTEMPT, this, request.REQUEST_CLASS_NAME);
-        if (target.getNextInChain() != null) {
-            LOGGER.trace(Request.REQUEST_SENT, this, request.REQUEST_CLASS_NAME);
-            target.getNextInChain().handleRequest(request);
-        } else {
-            LOGGER.trace(Request.REQUEST_ENDED, request.REQUEST_CLASS_NAME);
-        }
-    }
-
-    @Override
     public void handleRequest(Request request) {
 
-        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled() && !request.isRequestAlreadyHandledByHandler(this)) {
-            LOGGER.trace("{} (next in line) is handling the request (PIERCE ATTACK)...", this);
-            setHealth(getHealth() - requestLPA.getPierceDamage());
-            requestLPA.addHandlerToCheckSet(this);
-            LOGGER.trace("PIERCE ATTACK request processed! {} has received pierce damage {} from Lancer and its actual HP = {}",
-                                                                                                 this, requestLPA.getPierceDamage(), getHealth());
-        } else if (nextInChain != null && request.isNotFullyHandled()) {
-            nextInChain.handleRequest(request);
+        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled() && request.isRequestNotHandledByHandler(this)) {
+            LOGGER.trace("{} (next in line) is handling the request DEAL PIERCE ATTACK...", this);
+            var pierceDamage = requestLPA.getPierceDamageForHandler(this);
+            setHealth(getHealth() - pierceDamage);
+            LOGGER.trace("DEAL PIERCE ATTACK request processed! {} has received pierce damage {} from Lancer | HP = {}", this, pierceDamage, getHealth());
+        }
+
+        if (getNextInChain() != null) {
+            passRequest(getNextInChain(), request);
         } else {
-            LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize());
+            LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize() > 0 ? request.getHandlersSize() : Request.REQUEST_HANDLED_BY_NO_ONE);
         }
     }
 
@@ -152,7 +143,7 @@ public class Warrior implements Unit, IWarrior, Cloneable, RequestProvider {
         try {
             return (Warrior) super.clone();
         } catch (CloneNotSupportedException ignored) {
-            System.out.println("This message will never be printed");
+            LOGGER.trace("This message will never be printed");
         }
         return null;
     }

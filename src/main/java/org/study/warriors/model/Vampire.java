@@ -49,6 +49,6 @@ public class Vampire extends Warrior implements IVampire {
     public void drainLifeBasedOnDealtAttack(IWarrior target) {
         var healthValueAfterDrainLife = getHealth() > 0 ? getHealth() + ((target.getLastReceivedDamage() * getVampirism())/100) : 0;
         setHealth(Math.min(INITIAL_HEALTH, healthValueAfterDrainLife));
-        LOGGER.trace("{} drains life from his final damage dealt ({}) and heals himself by ({} * {})/100, new HP = {}", this, target.getLastReceivedDamage(), target.getLastReceivedDamage(), getVampirism(), getHealth());
+        LOGGER.trace("{} drains life from his final damage dealt {} and heals himself by ({} * {})/100 | HP = {}", this, target.getLastReceivedDamage(), target.getLastReceivedDamage(), getVampirism(), getHealth());
     }
 }
