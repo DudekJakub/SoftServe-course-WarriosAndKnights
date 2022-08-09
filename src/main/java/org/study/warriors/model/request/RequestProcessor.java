@@ -2,7 +2,6 @@ package org.study.warriors.model.request;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.study.warriors.model.request.type.IRequest;
 
 public interface RequestProcessor {
 

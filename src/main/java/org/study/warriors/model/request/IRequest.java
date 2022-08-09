@@ -1,4 +1,4 @@
-package org.study.warriors.model.request.type;
+package org.study.warriors.model.request;
 
 public interface IRequest {
     String getRequestName();

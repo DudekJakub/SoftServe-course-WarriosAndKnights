@@ -8,7 +8,7 @@ import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.request.Chain;
 import org.study.warriors.model.request.type.DamageRequest;
 import org.study.warriors.model.request.type.HealRequest;
-import org.study.warriors.model.request.type.IRequest;
+import org.study.warriors.model.request.IRequest;
 
 
 public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {

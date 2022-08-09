@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.CanHeal;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.request.type.HealRequest;
-import org.study.warriors.model.request.type.IRequest;
+import org.study.warriors.model.request.IRequest;
 
 public class RequestHealerDecorator extends RequestWarriorDecorator implements CanHeal {
 
