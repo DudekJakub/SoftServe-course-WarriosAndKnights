@@ -1,3 +1,3 @@
-#SoftServe-Academy
+# SoftServe-Academy
 
-##Homework and tasks
+### Homework and tasks
