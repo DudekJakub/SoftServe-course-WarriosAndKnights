@@ -13,13 +13,11 @@ o
 ?src/main/java/org/study/warriors/model/interfaces/IVampire.java,b\f\bf69f921c711eb96a333a61e6180612f349caea9
 n
 >src/test/java/org/study/warriors/model/SingleHitTestSuite.java,5\c\5c9dac40ac2a952e33c74db8886573f886fdffd3
-g
-7src/test/java/org/study/warriors/model/WarriorTest.java,b\0\b0be78a98395115e37f53c4921f0affdbbdb4ee0
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 b
 2src/main/java/org/study/warriors/model/Knight.java,8\1\8120b3e685f9d2c820690dde7e725da51c6f8255
-`
-0src/main/java/org/study/warriors/model/Army.java,e\a\eaf54661eb2751568d7264e328218ada1a8283b5
-d
-4src/main/java/org/study/warriors/service/Battle.java,0\3\03ff64702695161b657eb77112a2b509fe43bc65
+n
+>src/test/java/org/study/warriors/model/DuelFightTestSuite.java,1\f\1fdd8185fa217b46b20536124589fd5c4bb09f13
+c
+3src/main/java/org/study/warriors/model/Vampire.java,d\d\dd6aa42a71f264313bdf17ff7a21c5032bd1cda6
