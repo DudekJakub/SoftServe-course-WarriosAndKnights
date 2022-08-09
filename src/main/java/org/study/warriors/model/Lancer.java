@@ -1,9 +1,6 @@
 package org.study.warriors.model;
 
-import org.study.warriors.model.interfaces.IWarrior;
-import org.study.warriors.model.interfaces.RequestProvider;
-
-public class Lancer extends Warrior implements RequestProvider {
+public class Lancer extends Warrior {
 
     static final int INITIAL_HEALTH = 50;
     static final int ATTACK = 6;
@@ -24,11 +21,5 @@ public class Lancer extends Warrior implements RequestProvider {
     @Override
     public int getInitialHealth() {
         return INITIAL_HEALTH;
-    }
-
-    @Override
-    public void hit(IWarrior target) {
-        super.hit(target);
-        makeRequest(new RequestLancerPierceAttack(target));
     }
 }

@@ -40,27 +40,8 @@ public class Defender extends Warrior implements CanDefense {
     @Override
     public void reduceHealthBasedOnDamage(int damage) {
         var finalReceivedDamage = damage - getDefense();
-        LOGGER.trace("Defender with {} defence blocks damage {} | DMG = {}", getDefense(), damage, damage - getDefense());
+        LOGGER.trace("Defender is blocking received damage with defense {} | DMG = {}", getDefense(), finalReceivedDamage);
         super.reduceHealthBasedOnDamage(Math.max(0, finalReceivedDamage));
         setLastReceivedDamage(finalReceivedDamage);
-    }
-
-    @Override
-    public void handleRequest(Request request) {
-
-        if (request instanceof RequestLancerPierceAttack requestLPA && request.isNotFullyHandled()) {
-            LOGGER.trace("{} (next in line) is handling the request DEAL PIERCE ATTACK...", this);
-            var pierceDamage = requestLPA.getPierceDamageForHandler(this);
-            setHealth(getHealth() - (pierceDamage - getDefense()));
-            LOGGER.trace("DEAL PIERCE ATTACK request processed! {} has received pierce damage {} (respectively blocked) from Lancer | HP = {}", this, pierceDamage - getDefense(), getHealth());
-
-            if (getNextInChain() != null && request.isNotFullyHandled()) {
-                passRequest(getNextInChain(), request);
-            } else {
-                LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize() > 0 ? request.getHandlersSize() : Request.REQUEST_HANDLED_BY_NO_ONE);
-            }
-        } else {
-            super.handleRequest(request);
-        }
     }
 }

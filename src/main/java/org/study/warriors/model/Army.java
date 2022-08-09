@@ -1,5 +1,6 @@
 package org.study.warriors.model;
 
+import org.study.warriors.model.decorator.RequestWarriorDecorator;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 
@@ -9,7 +10,7 @@ import java.util.function.Supplier;
     /** By returning Army in each addUnit type of method we are able to use so-called fluent interface */
 
 public class Army {
-    private final List<IWarrior> soldiers = new ArrayList<>();
+    private final List<IWarrior> soldiers = new LinkedList<>();
 
     public Iterator<IWarrior> firstAlive() {
         return new FirstAliveIterator();
@@ -17,7 +18,7 @@ public class Army {
 
     public Army addSingleUnit(IWarrior warrior) {
         soldiers.add(warrior);
-        assignSoldierPositionInChain(this);
+        lineUp(this);
         return this;
     }
 
@@ -29,37 +30,44 @@ public class Army {
                 var o = constructor.newInstance();
                 soldiers.add(o);
             }
-            assignSoldierPositionInChain(this);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
         return this;
     }
 
-
     /** Use of Factory Pattern. UnitType has been placed in Unit-interface as well as 'createUnit' method */
     public void addUnits(Unit.UnitType type, int quantity) {
         for (int i = 0; i < quantity; i++) {
-            soldiers.add((IWarrior) Unit.newUnit(type));
+            IWarrior warrior = (IWarrior) Unit.newUnit(type);
+            soldiers.add(warrior);
         }
-        assignSoldierPositionInChain(this);
     }
 
     /** Use of Functional Interface - Supplier. Its method 'get' generates new Warrior object. */
     public Army addUnits(Supplier<IWarrior> factory, int quantity) {
         for (int i = 0; i < quantity; i++) {
-            soldiers.add(factory.get());
+            var warrior = factory.get();
+            soldiers.add(warrior);
         }
-        assignSoldierPositionInChain(this);
         return this;
     }
 
     /** Use of shallowClone. */
     public void addUnits(Warrior prototype, int quantity) {
         for (int i = 0; i < quantity; i++) {
-            soldiers.add(prototype.shallowClone());
+            IWarrior warrior = prototype.clone();
+            soldiers.add(warrior);
         }
-        assignSoldierPositionInChain(this);
+    }
+
+    /** Use of deepClone for Warrior various decorators */
+    public Army addUnits(RequestWarriorDecorator prototype, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            soldiers.add(prototype.clone());
+        }
+        lineUp(this);
+        return this;
     }
 
     public int getArmySize() {
@@ -72,22 +80,42 @@ public class Army {
                        .count();
     }
 
-    private void assignSoldierPositionInChain(Army army) {
-        var soldiers = army.soldiers;
-        for (int i = 0; i < army.soldiers.size(); i++) {
-            var soldier = soldiers.get(i);
+    public boolean isAlive() {
+        return soldiers.stream()
+                       .anyMatch(soldier -> isAlive());
+    }
 
-            if (i < army.soldiers.size() - 1) {
-                var soldierBehind = soldiers.get(i + 1);
-                soldier.setNextInChain(soldierBehind);
-            } else if (i > 0) {
-                var soldierInFront = soldiers.get(i - 1);
-                soldier.setPreviousInChain(soldierInFront);
+    public IWarrior getSoldierFromGivenPosition(int position) {
+        return soldiers.get(position);
+    }
+
+    public Map<IWarrior, Integer> getSoldiersAndTheirHp() {
+        Map<IWarrior, Integer> result = new LinkedHashMap<>();
+        soldiers.forEach(soldier -> result.put(soldier, soldier.getHealth()));
+        return result;
+    }
+
+    public void removeDeadSoldiersFromArmy() {
+        soldiers.forEach(soldier -> {
+            if (!soldier.isAlive()) soldiers.remove(soldier);
+        });
+    }
+
+    private void lineUp(Army army) {
+        var soldiers = army.soldiers;
+
+        for (int i = 0; i < army.soldiers.size(); i++) {
+            if (soldiers.get(i) instanceof RequestWarriorDecorator soldier) {
+                if (i < army.soldiers.size() - 1 && soldiers.get(i + 1) instanceof RequestWarriorDecorator nextSoldier) {
+                    soldier.setNextInChain(nextSoldier);
+                } else if (i > 0 && soldiers.get(i - 1) instanceof RequestWarriorDecorator previousSoldier) {
+                    soldier.setPreviousInChain(previousSoldier);
+                }
             }
         }
     }
 
-    private class FirstAliveIterator implements Iterator<IWarrior> {
+        private class FirstAliveIterator implements Iterator<IWarrior> {
         int cursor = 0;
 
         /** Example explanation : if cursor = 0 then 1st condition is satisfied, if first solider is alive 2nd condition is NOT satisfied so

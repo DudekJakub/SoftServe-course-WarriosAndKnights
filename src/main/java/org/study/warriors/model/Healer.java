@@ -34,23 +34,4 @@ public class Healer extends Warrior implements CanHeal {
     public void hit(IWarrior target) {
         LOGGER.trace("{} would like to attack the target {}, but he is so very pacifist!", this, target);
     }
-
-    @Override
-    public void handleRequest(Request request) {
-
-        if (request instanceof RequestHealerCureAlly requestHHA) {
-            LOGGER.trace("{} (next in line) is handling the request HEAL ALLY...", this);
-            heal((IWarrior) getPreviousInChain());
-            requestHHA.addHandlerToCheckSet(this);
-            LOGGER.trace("HEAL ALLY request processed!");
-
-            if (getNextInChain() != null) {
-                passRequest(getNextInChain(), request);
-            } else {
-                LOGGER.trace(Request.REQUEST_ENDED, request.getHandlersSize() > 0 ? request.getHandlersSize() : Request.REQUEST_HANDLED_BY_NO_ONE);
-            }
-        } else {
-            super.handleRequest(request);
-        }
-    }
 }
