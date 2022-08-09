@@ -5,10 +5,10 @@
       1.1) Tests for TheWarriors
       
       2) Army Battles
-      2.2) Tests for ArmyBattles
+      2.1) Tests for ArmyBattles
       
       3) The Defenders
-      3.3) Tests for TheDefenders
+      3.1) Tests for TheDefenders
 
 
       
