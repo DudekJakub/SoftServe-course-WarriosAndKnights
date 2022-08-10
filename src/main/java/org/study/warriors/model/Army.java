@@ -83,16 +83,11 @@ public class Army {
     }
 
     public boolean isAlive() {
-        return soldiers.stream()
-                       .anyMatch(soldier -> isAlive());
+        return !soldiers.isEmpty();
     }
 
     public IWarrior getSoldierFromGivenPosition(int position) {
         return soldiers.get(position);
-    }
-
-    public IWarrior getFirstAliveSoldier(Army army) {
-        return army.soldiers.stream().filter(HasHealth::isAlive).findFirst().get();
     }
 
     public Map<IWarrior, Integer> getSoldiersAndTheirHp() {
@@ -102,9 +97,7 @@ public class Army {
     }
 
     public void removeDeadSoldiersFromArmy() {
-        soldiers.forEach(soldier -> {
-            if (!soldier.isAlive()) soldiers.remove(soldier);
-        });
+        soldiers.removeIf(soldier -> !soldier.isAlive());
     }
 
     private void lineUp(Army army) {

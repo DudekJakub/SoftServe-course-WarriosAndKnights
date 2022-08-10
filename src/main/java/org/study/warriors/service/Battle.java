@@ -50,7 +50,7 @@ public class Battle {
 
     public static boolean straightFight(Army leftArmy, Army rightArmy) {
         LOGGER.debug("The straight fight between {} and {} has begun!", leftArmy.getSoldiersAndTheirHp(), rightArmy.getSoldiersAndTheirHp());
-        while (leftArmy.getAliveSoldiers() > 0 && rightArmy.getAliveSoldiers() > 0) {
+        while (leftArmy.isAlive() && rightArmy.isAlive()) {
             int smallerArmySize = Math.min(leftArmy.getArmySize(), rightArmy.getArmySize());
             for (int i = 0; i < smallerArmySize; i++) {
                 fight(leftArmy.getSoldierFromGivenPosition(i), rightArmy.getSoldierFromGivenPosition(i));
@@ -60,6 +60,6 @@ public class Battle {
             rightArmy.removeDeadSoldiersFromArmy();
         }
         LOGGER.debug("The straight fight between {} and {} has ended!", leftArmy.getSoldiersAndTheirHp(), rightArmy.getSoldiersAndTheirHp());
-        return leftArmy.getAliveSoldiers() > 0;
+        return leftArmy.isAlive();
     }
 }
