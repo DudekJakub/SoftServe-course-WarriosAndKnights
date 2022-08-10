@@ -1,5 +1,6 @@
 package org.study.warriors.model;
 
+import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.IWarrior;
@@ -61,7 +62,7 @@ public class Warrior implements Unit, IWarrior, Cloneable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName();
+        return getClass().getSimpleName();
     }
 
     public Warrior clone() {
