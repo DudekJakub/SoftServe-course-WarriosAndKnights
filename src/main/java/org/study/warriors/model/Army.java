@@ -1,6 +1,7 @@
 package org.study.warriors.model;
 
 import org.study.warriors.model.decorator.RequestWarriorDecorator;
+import org.study.warriors.model.interfaces.HasHealth;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 
@@ -54,11 +55,12 @@ public class Army {
     }
 
     /** Use of shallowClone. */
-    public void addUnits(Warrior prototype, int quantity) {
+    public Army addUnits(Warrior prototype, int quantity) {
         for (int i = 0; i < quantity; i++) {
             IWarrior warrior = prototype.clone();
             soldiers.add(warrior);
         }
+        return this;
     }
 
     /** Use of deepClone for Warrior various decorators */
@@ -87,6 +89,10 @@ public class Army {
 
     public IWarrior getSoldierFromGivenPosition(int position) {
         return soldiers.get(position);
+    }
+
+    public IWarrior getFirstAliveSoldier(Army army) {
+        return army.soldiers.stream().filter(HasHealth::isAlive).findFirst().get();
     }
 
     public Map<IWarrior, Integer> getSoldiersAndTheirHp() {
