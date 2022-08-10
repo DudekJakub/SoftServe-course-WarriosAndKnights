@@ -79,4 +79,30 @@ public class ArmyStraightTypeFightTestSuite {
         //Then
         assertFalse(battleResult);
     }
+
+    @Test
+    @DisplayName("4. Battlefield - StraightFight: ATTACKERS vs. DEFENDERS -> ATTACKERS should win")
+    void test4() {
+        //Given
+        var attackers = new Army();
+        var defenders = new Army();
+        attackers.addUnits(new Lancer(), 4)
+                .addUnits(new Warrior(), 3)
+                .addUnits(new Healer(), 1)
+                .addUnits(new Warrior(), 4)
+                .addUnits(new Healer(), 1)
+                .addUnits(new Knight(), 2);
+
+        defenders.addUnits(new Warrior(), 4)
+                .addUnits(new Defender(), 4)
+                .addUnits(new Healer(), 1)
+                .addUnits(new Vampire(), 2)
+                .addUnits(new Lancer(), 4);
+
+        //When
+        var battleResult = Battle.straightFight(attackers, defenders);
+
+        //Then
+        assertTrue(battleResult);
+    }
 }
