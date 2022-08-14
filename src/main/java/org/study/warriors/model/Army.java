@@ -1,7 +1,6 @@
 package org.study.warriors.model;
 
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
-import org.study.warriors.model.interfaces.HasHealth;
+import org.study.warriors.model.decorator.WarriorDecorator;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 
@@ -64,7 +63,7 @@ public class Army {
     }
 
     /** Use of deepClone for Warrior various decorators */
-    public Army addUnits(RequestWarriorDecorator prototype, int quantity) {
+    public Army addUnits(WarriorDecorator prototype, int quantity) {
         for (int i = 0; i < quantity; i++) {
             soldiers.add(prototype.clone());
         }
@@ -104,10 +103,10 @@ public class Army {
         var soldiers = army.soldiers;
 
         for (int i = 0; i < army.soldiers.size(); i++) {
-            if (soldiers.get(i) instanceof RequestWarriorDecorator soldier) {
-                if (i < army.soldiers.size() - 1 && soldiers.get(i + 1) instanceof RequestWarriorDecorator nextSoldier) {
+            if (soldiers.get(i) instanceof WarriorDecorator soldier) {
+                if (i < army.soldiers.size() - 1 && soldiers.get(i + 1) instanceof WarriorDecorator nextSoldier) {
                     soldier.setNextInChain(nextSoldier);
-                } else if (i > 0 && soldiers.get(i - 1) instanceof RequestWarriorDecorator previousSoldier) {
+                } else if (i > 0 && soldiers.get(i - 1) instanceof WarriorDecorator previousSoldier) {
                     soldier.setPreviousInChain(previousSoldier);
                 }
             }
