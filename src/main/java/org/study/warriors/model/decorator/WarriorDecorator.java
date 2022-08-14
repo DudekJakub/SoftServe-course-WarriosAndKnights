@@ -3,23 +3,25 @@ package org.study.warriors.model.decorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Warrior;
+import org.study.warriors.model.equipment.weapon.WeaponEquipment;
 import org.study.warriors.model.damage.IPiercing;
 import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.observer.Observer;
 import org.study.warriors.model.request.Chain;
 import org.study.warriors.model.request.type.DamageRequest;
 import org.study.warriors.model.request.type.HealRequest;
 import org.study.warriors.model.request.IRequest;
 
 
-public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {
+public class WarriorDecorator implements IWarrior, Chain, Cloneable {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(RequestWarriorDecorator.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(WarriorDecorator.class);
 
     protected IWarrior decorated;
     private Chain nextInChain;
     private Chain previousInChain;
 
-    public RequestWarriorDecorator(final IWarrior warrior) {
+    public WarriorDecorator(final IWarrior warrior) {
         this.decorated = warrior;
     }
 
@@ -54,6 +56,16 @@ public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {
     }
 
     @Override
+    public WeaponEquipment getEquipment() {
+        return decorated.getEquipment();
+    }
+
+    @Override
+    public void setAttack(int attack) {
+        decorated.setAttack(attack);
+    }
+
+    @Override
     public void setHealth(int health) {
         decorated.setHealth(health);
     }
@@ -74,19 +86,34 @@ public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {
     }
 
     @Override
-    public void hit(IWarrior target) {
-        decorated.hit(target);
-        sendRequest(new HealRequest(this), getNextInChain());
-    }
-
-    @Override
     public void reduceHealthBasedOnDamage(int damage) {
         decorated.reduceHealthBasedOnDamage(damage);
     }
 
     @Override
-    public void enlargeHealthBasedOnHeal(int heal) {
-        decorated.enlargeHealthBasedOnHeal(heal);
+    public void increaseHealthBasedOnHeal(int heal) {
+        decorated.increaseHealthBasedOnHeal(heal);
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        decorated.registerObserver(observer);
+    }
+
+    @Override
+    public void notifyObserver() {
+        decorated.notifyObserver();
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        decorated.removeObserver(observer);
+    }
+
+    @Override
+    public void hit(IWarrior target) {
+        decorated.hit(target);
+        sendRequest(new HealRequest(this), getNextInChain());
     }
 
     @Override
@@ -96,9 +123,9 @@ public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {
 
             LOGGER.trace("{} is currently process...", request.getRequestName());
 
-            int initialHealth = getHealth();
+            int healthBefore = getHealth();
             receiveDamage(damageType);
-            int dealtDamage = initialHealth - getHealth();
+            int dealtDamage = healthBefore - getHealth();
 
             if (damageType instanceof IPiercing piercing && piercing.getCounter() > 1) {
                 piercing.decreaseCounter();
@@ -118,9 +145,9 @@ public class RequestWarriorDecorator implements IWarrior, Chain, Cloneable {
     }
 
     @Override
-    public RequestWarriorDecorator clone() {
+    public WarriorDecorator clone() {
         try {
-            RequestWarriorDecorator clone = (RequestWarriorDecorator) super.clone();
+            WarriorDecorator clone = (WarriorDecorator) super.clone();
             clone.decorated = ((Warrior) this.decorated).clone();
             return clone;
         } catch (CloneNotSupportedException e) {

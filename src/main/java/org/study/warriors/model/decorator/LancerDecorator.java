@@ -6,9 +6,9 @@ import org.study.warriors.model.request.Chain;
 import org.study.warriors.model.request.type.DamageRequest;
 import org.study.warriors.model.request.type.HealRequest;
 
-public class RequestLancerDecorator extends RequestWarriorDecorator {
+public class LancerDecorator extends WarriorDecorator {
 
-    public RequestLancerDecorator(final IWarrior warrior) {
+    public LancerDecorator(final IWarrior warrior) {
         super(warrior);
     }
 
