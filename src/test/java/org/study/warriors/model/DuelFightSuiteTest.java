@@ -2,12 +2,11 @@ package org.study.warriors.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.*;
 import org.study.warriors.service.Battle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DuelFightTestSuite {
+class DuelFightSuiteTest {
 
     @Test
     void smokeTest() {

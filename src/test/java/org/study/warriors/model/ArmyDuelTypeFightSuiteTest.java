@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.study.warriors.model.decorator.RequestHealerDecorator;
-import org.study.warriors.model.decorator.RequestLancerDecorator;
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
+import org.study.warriors.model.decorator.HealerDecorator;
+import org.study.warriors.model.decorator.LancerDecorator;
+import org.study.warriors.model.decorator.WarriorDecorator;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.service.Battle;
 
@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArmyDuelTypeFightTestSuite {
+class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("1. Battlefield (balanced size of soldiers): Knights (attack) vs Warriors (defend) -> Knights win")
@@ -209,9 +209,9 @@ class ArmyDuelTypeFightTestSuite {
         //Given
         var singleLancerArmy = new Army();
         var warriorArmy = new Army();
-        var warrior1 = new RequestWarriorDecorator(new Warrior());
-        var warrior2 = new RequestWarriorDecorator(new Warrior());
-        singleLancerArmy.addUnits(new RequestLancerDecorator(new Lancer()), 1);
+        var warrior1 = new WarriorDecorator(new Warrior());
+        var warrior2 = new WarriorDecorator(new Warrior());
+        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
         warriorArmy.addSingleUnit(warrior1);
         warriorArmy.addSingleUnit(warrior2);
 
@@ -252,12 +252,12 @@ class ArmyDuelTypeFightTestSuite {
         //Given
         var singleWarriorArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new RequestWarriorDecorator(new Warrior());
-        var healerFromSecondArmy = new RequestHealerDecorator(new Healer());
+        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
+        var healerFromSecondArmy = new HealerDecorator(new Healer());
         var healerFromSecondArmyInitialHealth = healerFromSecondArmy.getHealth();
 
         warriorAndHealerArmy.addSingleUnit(warriorFromSecondArmy).addSingleUnit(healerFromSecondArmy);
-        singleWarriorArmy.addUnits(new RequestWarriorDecorator(new Warrior()), 1);
+        singleWarriorArmy.addUnits(new WarriorDecorator(new Warrior()), 1);
 
         //When
         var battleResult = Battle.fight(singleWarriorArmy, warriorAndHealerArmy);
@@ -277,10 +277,10 @@ class ArmyDuelTypeFightTestSuite {
         //Given
         var singleLancerArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new RequestWarriorDecorator(new Warrior());
-        var healerFromSecondArmy = new RequestHealerDecorator(new Healer());
+        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
+        var healerFromSecondArmy = new HealerDecorator(new Healer());
         warriorAndHealerArmy.addSingleUnit(warriorFromSecondArmy).addSingleUnit(healerFromSecondArmy);
-        singleLancerArmy.addUnits(new RequestLancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, warriorAndHealerArmy);
@@ -300,13 +300,13 @@ class ArmyDuelTypeFightTestSuite {
         //Given
         var singleLancerArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new RequestWarriorDecorator(new Warrior());
-        var firstHealerFromSecondArmy = new RequestHealerDecorator(new Healer());
-        var secondHealerFromSecondArmy = new RequestHealerDecorator(new Healer());
+        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
+        var firstHealerFromSecondArmy = new HealerDecorator(new Healer());
+        var secondHealerFromSecondArmy = new HealerDecorator(new Healer());
 
         warriorAndHealerArmy.addUnits(warriorFromSecondArmy, 1).addUnits(firstHealerFromSecondArmy, 1)
                                                                                .addUnits(secondHealerFromSecondArmy, 1);
-        singleLancerArmy.addUnits(new RequestLancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, warriorAndHealerArmy);
@@ -328,15 +328,15 @@ class ArmyDuelTypeFightTestSuite {
         //Given
         var singleLancerArmy = new Army();
         var defenderAndHealerArmy = new Army();
-        var defender1FromSecondArmy = new RequestWarriorDecorator(new Defender());
-        var defender2FromSecondArmy = new RequestWarriorDecorator(new Defender());
-        var healer1FromSecondArmy = new RequestHealerDecorator(new Healer());
-        var healer2FromSecondArmy = new RequestHealerDecorator(new Healer());
+        var defender1FromSecondArmy = new WarriorDecorator(new Defender());
+        var defender2FromSecondArmy = new WarriorDecorator(new Defender());
+        var healer1FromSecondArmy = new HealerDecorator(new Healer());
+        var healer2FromSecondArmy = new HealerDecorator(new Healer());
 
         defenderAndHealerArmy.addSingleUnit(defender1FromSecondArmy).addSingleUnit(defender2FromSecondArmy)
                              .addSingleUnit(healer1FromSecondArmy).addSingleUnit(healer2FromSecondArmy);
 
-        singleLancerArmy.addUnits(new RequestLancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, defenderAndHealerArmy);
@@ -432,49 +432,49 @@ class ArmyDuelTypeFightTestSuite {
                         true),
                 Arguments.of(
                         new Army()
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 5)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 3)
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 2),
+                                .addUnits(new LancerDecorator(new Lancer()), 5)
+                                .addUnits(new WarriorDecorator(new Vampire()), 3)
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new WarriorDecorator(new Defender()), 2),
                         new Army()
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 6)
-                                .addUnits(new RequestWarriorDecorator(new Lancer()), 5),
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new WarriorDecorator(new Defender()), 4)
+                                .addUnits(new WarriorDecorator(new Vampire()), 6)
+                                .addUnits(new WarriorDecorator(new Lancer()), 5),
                         false),
                 Arguments.of(
                         new Army()
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 7)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 3)
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 2),
+                                .addUnits(new LancerDecorator(new Lancer()), 7)
+                                .addUnits(new WarriorDecorator(new Vampire()), 3)
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new WarriorDecorator(new Defender()), 2),
                         new Army()
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 6)
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 4),
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new WarriorDecorator(new Defender()), 4)
+                                .addUnits(new WarriorDecorator(new Vampire()), 6)
+                                .addUnits(new LancerDecorator(new Lancer()), 4),
                         true),
                 Arguments.of(
                         new Army()
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 2),
+                                .addUnits(new WarriorDecorator(new Warrior()), 2),
                         new Army()
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 1)
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 1),
+                                .addUnits(new LancerDecorator(new Lancer()), 1)
+                                .addUnits(new WarriorDecorator(new Warrior()), 1),
                         false),
                 Arguments.of(
                         new Army()
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 7)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 3)
-                                .addUnits(new RequestHealerDecorator(new Healer()), 1)
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestHealerDecorator(new Healer()), 1)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 2),
+                                .addUnits(new LancerDecorator(new Lancer()), 7)
+                                .addUnits(new WarriorDecorator(new Vampire()), 3)
+                                .addUnits(new HealerDecorator(new Healer()), 1)
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new HealerDecorator(new Healer()), 1)
+                                .addUnits(new WarriorDecorator(new Defender()), 2),
                         new Army()
-                                .addUnits(new RequestWarriorDecorator(new Warrior()), 4)
-                                .addUnits(new RequestWarriorDecorator(new Defender()), 4)
-                                .addUnits(new RequestHealerDecorator(new Healer()), 1)
-                                .addUnits(new RequestWarriorDecorator(new Vampire()), 6)
-                                .addUnits(new RequestLancerDecorator(new Lancer()), 4),
+                                .addUnits(new WarriorDecorator(new Warrior()), 4)
+                                .addUnits(new WarriorDecorator(new Defender()), 4)
+                                .addUnits(new HealerDecorator(new Healer()), 1)
+                                .addUnits(new WarriorDecorator(new Vampire()), 6)
+                                .addUnits(new LancerDecorator(new Lancer()), 4),
                         true)
         );
     }

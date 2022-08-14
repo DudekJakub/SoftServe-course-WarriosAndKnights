@@ -5,9 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.study.warriors.service.Battle;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.study.warriors.model.interfaces.Unit.UnitType.LANCER;
 
-public class ArmyStraightTypeFightTestSuite {
+public class ArmyStraightTypeFightSuiteTest {
 
     @Test
     @DisplayName("1. Battlefield - StraightFight: ATTACKERS vs. DEFENDERS -> ATTACKERS should lose")

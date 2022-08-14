@@ -1,7 +1,7 @@
 package org.study.warriors.model;
 
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
+import org.study.warriors.model.decorator.WarriorDecorator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ class WarriorTest {
     @Test
     void deepCloneOfWarriorDecorator() {
         //Given
-        var warriorDeco = new RequestWarriorDecorator(new Warrior());
+        var warriorDeco = new WarriorDecorator(new Warrior());
         var clonedWarriorDeco = warriorDeco.clone();
         var warriorDecoHp = warriorDeco.getHealth();
         var clonedWarriorDecoHp = clonedWarriorDeco.getHealth();

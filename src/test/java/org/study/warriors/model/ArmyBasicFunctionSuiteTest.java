@@ -3,13 +3,13 @@ package org.study.warriors.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.decorator.RequestHealerDecorator;
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
+import org.study.warriors.model.decorator.HealerDecorator;
+import org.study.warriors.model.decorator.WarriorDecorator;
 import org.study.warriors.model.interfaces.Unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArmyBasicFunctionTestSuite {
+class ArmyBasicFunctionSuiteTest {
 
     private Army army;
 
@@ -97,9 +97,9 @@ class ArmyBasicFunctionTestSuite {
     void whenArmyIsFormedUltimately_AlliesAreBoundedInChainRespectively() {
         //Given
             //BeforeEach setting
-        var unit1 = new RequestWarriorDecorator(new Warrior());
-        var unit2 = new RequestWarriorDecorator(new Defender());
-        var unit3 = new RequestHealerDecorator(new Healer());
+        var unit1 = new WarriorDecorator(new Warrior());
+        var unit2 = new WarriorDecorator(new Defender());
+        var unit3 = new HealerDecorator(new Healer());
 
         //When
         army.addSingleUnit(unit1).addSingleUnit(unit2).addSingleUnit(unit3);
