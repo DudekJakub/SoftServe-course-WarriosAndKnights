@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.damage.IDamage;
 import org.study.warriors.model.damage.SimpleDamage;
+import org.study.warriors.model.observer.Observable;
 
-public interface IWarrior extends HasHealth, CanAttack {
+public interface IWarrior extends HasHealth, CanAttack, CanWieldWeapon, Observable {
 
     Logger LOGGER = LoggerFactory.getLogger(IWarrior.class);
 
