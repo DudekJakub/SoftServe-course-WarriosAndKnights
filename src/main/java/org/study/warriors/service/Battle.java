@@ -19,7 +19,7 @@ public class Battle {
         while (attacker.isAlive() && defender.isAlive()) {
             attacker.hit(defender);
             if (!defender.isAlive()) {
-                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker.getClass().getCanonicalName(), attacker.getHealth(), defender, defender.getHealth());
+                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker, attacker.getHealth(), defender, defender.getHealth());
                 return attacker.isAlive();
             } else {
                 defender.hit(attacker);
