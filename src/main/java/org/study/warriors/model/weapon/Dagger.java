@@ -3,6 +3,7 @@ package org.study.warriors.model.weapon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.CanWieldWeapon;
+import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.observer.Observer;
 
 public class Dagger extends Weapon implements Observer {
@@ -14,7 +15,7 @@ public class Dagger extends Weapon implements Observer {
     }
 
     @Override
-    public void update(CanWieldWeapon warrior) {
+    public void update(IWarrior warrior) {
         if (warrior.getHealth() < 15 && !modifierApplied) {
             warrior.updateParameterFromSingleWeapon(this);
             LOGGER.trace("{}'s modifiers have been triggered! {}'s attack increased by {} | NEW AP : {}", this, warrior, this.attackModifier, warrior.getAttack());
