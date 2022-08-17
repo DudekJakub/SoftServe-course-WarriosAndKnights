@@ -27,6 +27,7 @@ public interface CanWieldWeapon extends HasHealth, CanAttack {
         getEquipment().addWeapons(clonedWeaponArray);
         updateParametersFromWeapons(getEquipment());
         getEquipment().markWeaponsWithInstanceModifiersAsApplied(clonedWeaponArray);
+
         LOGGER.trace("Weapons equipped. Instant modifiers applied!");
 
         for (var weapon : List.of(clonedWeaponArray)) {

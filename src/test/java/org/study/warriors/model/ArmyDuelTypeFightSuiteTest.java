@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.study.warriors.model.decorator.HealerDecorator;
-import org.study.warriors.model.decorator.LancerDecorator;
-import org.study.warriors.model.decorator.WarriorDecorator;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.service.Battle;
 
@@ -20,7 +17,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("1. Battlefield (balanced size of soldiers): Knights (attack) vs Warriors (defend) -> Knights win")
-    void whenArmiesAreBalancedAndKnightArmyVsWarriorArmy_KnightArmyWin() {
+    void test1() {
         //Given
         Army knights = new Army();
         Army warriors = new Army();
@@ -38,7 +35,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("2. Battlefield (balanced size of soldiers): Warriors (attack) vs Knights (defend) -> Knights win")
-    void whenArmiesAreBalancedAndWarriorArmyVsKnightArmy_KnightArmyWin() {
+    void test2() {
         //Given
         Army warriors = new Army();
         Army knights = new Army();
@@ -57,7 +54,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("3. Battlefield (balanced size of soldiers): Warriors (attack) vs Defenders (defend) -> Defenders win")
-    void whenArmiesAreBalancedAndWarriorArmyVsDefenderArmy_DefenderArmyWin() {
+    void test3() {
         //Given
         Army warriors = new Army();
         Army defenders = new Army();
@@ -77,7 +74,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("4. Battlefield (balanced size of soldiers): Vampires (attack) vs Warriors (defend) -> Vampires win")
-    void whenArmiesAreBalancedAndVampireArmyVsWarriorArmy_VampireArmyWin() {
+    void test4() {
         //Given
         Army vampires = new Army();
         Army warriors = new Army();
@@ -97,7 +94,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("5. Battlefield (balanced size of soldiers): Vampires (attack) vs Defenders (defend) -> Vampires lose")
-    void whenArmiesAreBalancedAndVampireArmyVsDefenderArmy_VampireArmyLose() {
+    void test5() {
         //Given
         Army vampires = new Army();
         Army defenders = new Army();
@@ -117,7 +114,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("6. Battlefield (balanced size of soldiers): Warriors (attack) vs Vampires (defend) -> Warriors win")
-    void whenArmiesAreBalancedAndWarriorArmyVsVampireArmy_WarriorArmyWins() {
+    void test6() {
         //Given
         Army warriors = new Army();
         Army vampires = new Army();
@@ -137,7 +134,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("7. Battlefield (balanced size of soldiers): Defenders (attack) vs Vampires (defend) -> Defenders win")
-    void whenArmiesAreBalancedAndDefendersArmyVsVampireArmy_DefendersArmyWins() {
+    void test7() {
         //Given
         Army defenders = new Army();
         Army vampires = new Army();
@@ -157,7 +154,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("8. Battlefield (unbalanced size of soldiers): x1 WarriorArmy vs x2 WarriorArmy -> First one loses")
-    void whenArmiesAreNotBalancedAndX1WarriorArmyVsX2WarriorArmy_FirstArmyLoses() {
+    void test8() {
         //Given
         Army warriorsArmy1 = new Army();
         Army warriorsArmy2 = new Army();
@@ -173,7 +170,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("9. Battlefield (unbalanced size of soldiers): x2 WarriorArmy vs x3 WarriorArmy -> First one loses")
-    void whenArmiesAreNotBalancedAndX2WarriorArmyVsX3WarriorArmy_FirstArmyLoses() {
+    void test9() {
         //Given
         Army warriorsArmy1 = new Army();
         Army warriorsArmy2 = new Army();
@@ -189,7 +186,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("10. Battlefield (unbalanced size of soldiers): x5 WarriorArmy vs x7 WarriorArmy -> First one loses")
-    void whenArmiesAreNotBalancedAndX5WarriorArmyVsX7WarriorArmy_FirstArmyLoses() {
+    void test10() {
         //Given
         Army warriorsArmy1 = new Army();
         Army warriorsArmy2 = new Army();
@@ -205,13 +202,13 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("11. Battlefield: x1 LancerArmy vs x2 WarriorArmy -> Lancer hits both warriors")
-    void whenSingleLancerFightVsTwoSoldiersInLine_BothSoldiersShouldBeHitRespectivelyAndLancerArmyLoses() {
+    void test11() {
         //Given
         var singleLancerArmy = new Army();
         var warriorArmy = new Army();
-        var warrior1 = new WarriorDecorator(new Warrior());
-        var warrior2 = new WarriorDecorator(new Warrior());
-        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
+        var warrior1 = new Warrior();
+        var warrior2 = new Warrior();
+        singleLancerArmy.addUnits(new Lancer(), 1);
         warriorArmy.addSingleUnit(warrior1);
         warriorArmy.addSingleUnit(warrior2);
 
@@ -228,7 +225,7 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("12. Battlefield: x1 LancerArmy vs x2 DefenderArmy -> LancerArmy hits both defender where both should reduced damage taken respectively")
-    void whenSingleLancerFightVsTwoDefendersInLine_BothShouldReduceDamageTakenRespectivelyAndLancerArmyLoses() {
+    void test12() {
         //Given
         var singleLancerArmy = new Army();
         var defenderArmy = new Army();
@@ -248,16 +245,16 @@ class ArmyDuelTypeFightSuiteTest {
     @Test
     @DisplayName("13. Battlefield: x1 WarriorArmy vs (x1 Warrior & x1 Healer)Army ->  SingleWarriorArmy loses & " +
                                    "Warrior from sec. army should remains 20 HP & Healer from sec. army shouldn't lose any HP")
-    void whenSingleWarriorArmyFightVsOneWarriorAndOneHealerArmy_HealerShouldHealsItsAllyAndWonAndDoesntLoseHp() {
+    void test13() {
         //Given
         var singleWarriorArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
-        var healerFromSecondArmy = new HealerDecorator(new Healer());
+        var warriorFromSecondArmy = new Warrior();
+        var healerFromSecondArmy = new Healer();
         var healerFromSecondArmyInitialHealth = healerFromSecondArmy.getHealth();
 
         warriorAndHealerArmy.addSingleUnit(warriorFromSecondArmy).addSingleUnit(healerFromSecondArmy);
-        singleWarriorArmy.addUnits(new WarriorDecorator(new Warrior()), 1);
+        singleWarriorArmy.addUnits(new Warrior(), 1);
 
         //When
         var battleResult = Battle.fight(singleWarriorArmy, warriorAndHealerArmy);
@@ -273,14 +270,14 @@ class ArmyDuelTypeFightSuiteTest {
     @Test
     @DisplayName("14. Battlefield: x1 LancerArmy vs (x1 Warrior & x1 Healer)Army -> SingleLancerArmy loses & " +
                                    "Warrior from sec. army should remains 10 HP & Healer from sec. army should remains 30 HP")
-    void whenSingleLancerArmyFightVsOneWarriorAndOneHealerArmy_HealerShouldHealsItsAllyAndWonAndLoseSomeHp() {
+    void test14() {
         //Given
         var singleLancerArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
-        var healerFromSecondArmy = new HealerDecorator(new Healer());
+        var warriorFromSecondArmy = new Warrior();
+        var healerFromSecondArmy = new Healer();
         warriorAndHealerArmy.addSingleUnit(warriorFromSecondArmy).addSingleUnit(healerFromSecondArmy);
-        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new Lancer(), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, warriorAndHealerArmy);
@@ -295,24 +292,24 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("15. Battlefield: x1 LancerArmy vs (x1 Warrior & x2 Healer)Army -> SingleLancerArmy loses & " +
-                 "Warrior from sec. army should remains 10 HP & first Healer from sec. army should remains 41 HP")
-    void whenSingleLancerArmyFightVsOneWarriorAndTwoHealerArmy_HealerShouldHealsItsAllyAndWonAndFirstHealerShouldLoseSomeHp() {
+                                   "Warrior from sec. army should remains 10 HP & first Healer from sec. army should remains 41 HP")
+    void test15() {
         //Given
         var singleLancerArmy = new Army();
         var warriorAndHealerArmy = new Army();
-        var warriorFromSecondArmy = new WarriorDecorator(new Warrior());
-        var firstHealerFromSecondArmy = new HealerDecorator(new Healer());
-        var secondHealerFromSecondArmy = new HealerDecorator(new Healer());
+        var warriorFromSecondArmy = new Warrior();
+        var firstHealerFromSecondArmy = new Healer();
+        var secondHealerFromSecondArmy = new Healer();
 
         warriorAndHealerArmy.addUnits(warriorFromSecondArmy, 1).addUnits(firstHealerFromSecondArmy, 1)
                                                                                .addUnits(secondHealerFromSecondArmy, 1);
-        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new Lancer(), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, warriorAndHealerArmy);
-        var warriorFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.getSoldierFromGivenPosition(0).getHealth();
-        var firstHealerFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.getSoldierFromGivenPosition(1).getHealth();
-        var secondHealerFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.getSoldierFromGivenPosition(2).getHealth();
+        var warriorFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.unitAtPosition(0).getHealth();
+        var firstHealerFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.unitAtPosition(1).getHealth();
+        var secondHealerFromSecondArmyHealthPointsAfterBattle = warriorAndHealerArmy.unitAtPosition(2).getHealth();
 
         //Then
         assertFalse(battleResult);
@@ -323,35 +320,72 @@ class ArmyDuelTypeFightSuiteTest {
 
     @Test
     @DisplayName("16. Battlefield: x1 LancerArmy vs (x2 Defender & x2 Healer)Army -> SingleLancerArmy loses & " +
-            "Second Defender should be healed respectively & First Healer shouldn't be healed at all")
-    void whenSingleLancerArmyFightVsTwoDefenderAndTwoHealerArmy_SecondDefenderShouldBeHealedRespectivelyAndFirstHealerShouldNotReceiveAnyHeal() {
+                                   "Second Defender should be healed respectively & First Healer shouldn't be healed at all")
+    void test16() {
         //Given
         var singleLancerArmy = new Army();
         var defenderAndHealerArmy = new Army();
-        var defender1FromSecondArmy = new WarriorDecorator(new Defender());
-        var defender2FromSecondArmy = new WarriorDecorator(new Defender());
-        var healer1FromSecondArmy = new HealerDecorator(new Healer());
-        var healer2FromSecondArmy = new HealerDecorator(new Healer());
+        var defender1FromSecondArmy = new Defender();
+        var defender2FromSecondArmy = new Defender();
+        var healer1FromSecondArmy = new Healer();
+        var healer2FromSecondArmy = new Healer();
 
         defenderAndHealerArmy.addSingleUnit(defender1FromSecondArmy).addSingleUnit(defender2FromSecondArmy)
                              .addSingleUnit(healer1FromSecondArmy).addSingleUnit(healer2FromSecondArmy);
 
-        singleLancerArmy.addUnits(new LancerDecorator(new Lancer()), 1);
+        singleLancerArmy.addUnits(new Lancer(), 1);
 
         //When
         var battleResult = Battle.fight(singleLancerArmy, defenderAndHealerArmy);
-        var firstDefenderFromSecondArmyHealthPointsAfterBattle = defender1FromSecondArmy;
-        var secondDefenderFromSecondArmyHealthPointsAfterBattle = defender2FromSecondArmy;
-        var firstHealerFromSecondArmyHealthPointsAfterBattle = healer1FromSecondArmy;
+        var firstDefenderFromSecondArmyHealthPointsAfterBattle = defender1FromSecondArmy.getHealth();
+        var secondDefenderFromSecondArmyHealthPointsAfterBattle = defender2FromSecondArmy.getHealth();
+        var firstHealerFromSecondArmyHealthPointsAfterBattle = healer1FromSecondArmy.getHealth();
 
         //Then
         assertFalse(battleResult);
-        assertEquals(0 ,0 );
+        assertEquals(0 ,firstDefenderFromSecondArmyHealthPointsAfterBattle);
+        assertEquals(54, secondDefenderFromSecondArmyHealthPointsAfterBattle);
+        assertEquals(54, firstHealerFromSecondArmyHealthPointsAfterBattle);
+    }
+
+    @Test
+    @DisplayName("17. Battlefield: SMOKE TEST")
+    void test17() {
+//            var ronald = new Warlord();
+//            var heimdall = new Knight();
+//            assertFalse(Battle.fight(heimdall, ronald));
+            var myArmy = new Army();
+            myArmy.addUnits(Warlord::new, 1);
+            myArmy.addUnits(Warrior::new, 2);
+            myArmy.addUnits(Lancer::new, 2);
+            myArmy.addUnits(Healer::new, 2);
+            var enemyArmy = new Army();
+            enemyArmy.addUnits(Warlord::new, 3);
+            enemyArmy.addUnits(Vampire::new, 1);
+            enemyArmy.addUnits(Healer::new, 2);
+            enemyArmy.addUnits(Knight::new, 2);
+            myArmy.moveUnits();
+            enemyArmy.moveUnits();
+
+// you can provide any other interface for testing the order
+            assertEquals(Lancer.class, myArmy.unitAtPosition(0).getClass());
+            assertEquals(Healer.class, myArmy.unitAtPosition(1).getClass());
+
+// negative index means from the last position, so -1 == last
+            assertEquals(Warlord.class, myArmy.unitAtPosition(myArmy.getArmySize() - 1).getClass());
+            assertEquals(Vampire.class, enemyArmy.unitAtPosition(0).getClass());
+            assertEquals(Warlord.class, enemyArmy.unitAtPosition(enemyArmy.getArmySize() - 1).getClass());
+            assertEquals(Knight.class, enemyArmy.unitAtPosition(enemyArmy.getArmySize() - 2).getClass());
+
+//6, not 8, because only 1 Warlord per army could be
+            assertEquals(6, enemyArmy.getArmySize());
+            var battleResult = Battle.fight(myArmy, enemyArmy);
+            assertTrue(battleResult);
     }
 
     @ParameterizedTest
     @MethodSource
-    @DisplayName("17. Battlefield (parametrizedTest): Battles of Armies check if result of fights match with real outputs")
+    @DisplayName("18. Battlefield (parametrizedTest): Battles of Armies check if result of fights match with real outputs")
     void provideSoldiersForArmies(Army army1, Army army2, boolean expectedResult) {
         Assertions.assertSame(expectedResult, Battle.fight(army1, army2));
     }
@@ -432,49 +466,49 @@ class ArmyDuelTypeFightSuiteTest {
                         true),
                 Arguments.of(
                         new Army()
-                                .addUnits(new LancerDecorator(new Lancer()), 5)
-                                .addUnits(new WarriorDecorator(new Vampire()), 3)
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new WarriorDecorator(new Defender()), 2),
+                                .addUnits(new Lancer(), 5)
+                                .addUnits(new Vampire(), 3)
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Defender(), 2),
                         new Army()
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new WarriorDecorator(new Defender()), 4)
-                                .addUnits(new WarriorDecorator(new Vampire()), 6)
-                                .addUnits(new WarriorDecorator(new Lancer()), 5),
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Defender(), 4)
+                                .addUnits(new Vampire(), 6)
+                                .addUnits(new Lancer(), 5),
                         false),
                 Arguments.of(
                         new Army()
-                                .addUnits(new LancerDecorator(new Lancer()), 7)
-                                .addUnits(new WarriorDecorator(new Vampire()), 3)
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new WarriorDecorator(new Defender()), 2),
+                                .addUnits(new Lancer(), 7)
+                                .addUnits(new Vampire(), 3)
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Defender(), 2),
                         new Army()
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new WarriorDecorator(new Defender()), 4)
-                                .addUnits(new WarriorDecorator(new Vampire()), 6)
-                                .addUnits(new LancerDecorator(new Lancer()), 4),
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Defender(), 4)
+                                .addUnits(new Vampire(), 6)
+                                .addUnits(new Lancer(), 4),
                         true),
                 Arguments.of(
                         new Army()
-                                .addUnits(new WarriorDecorator(new Warrior()), 2),
+                                .addUnits(new Warrior(), 2),
                         new Army()
-                                .addUnits(new LancerDecorator(new Lancer()), 1)
-                                .addUnits(new WarriorDecorator(new Warrior()), 1),
+                                .addUnits(new Lancer(), 1)
+                                .addUnits(new Warrior(), 1),
                         false),
                 Arguments.of(
                         new Army()
-                                .addUnits(new LancerDecorator(new Lancer()), 7)
-                                .addUnits(new WarriorDecorator(new Vampire()), 3)
-                                .addUnits(new HealerDecorator(new Healer()), 1)
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new HealerDecorator(new Healer()), 1)
-                                .addUnits(new WarriorDecorator(new Defender()), 2),
+                                .addUnits(new Lancer(), 7)
+                                .addUnits(new Vampire(), 3)
+                                .addUnits(new Healer(), 1)
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Healer(), 1)
+                                .addUnits(new Defender(), 2),
                         new Army()
-                                .addUnits(new WarriorDecorator(new Warrior()), 4)
-                                .addUnits(new WarriorDecorator(new Defender()), 4)
-                                .addUnits(new HealerDecorator(new Healer()), 1)
-                                .addUnits(new WarriorDecorator(new Vampire()), 6)
-                                .addUnits(new LancerDecorator(new Lancer()), 4),
+                                .addUnits(new Warrior(), 4)
+                                .addUnits(new Defender(), 4)
+                                .addUnits(new Healer(), 1)
+                                .addUnits(new Vampire(), 6)
+                                .addUnits(new Lancer(), 4),
                         true)
         );
     }

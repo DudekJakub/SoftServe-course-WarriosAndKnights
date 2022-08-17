@@ -180,7 +180,7 @@ class DuelFightSuiteTest {
     }
 
     @Test
-    @DisplayName("9. Fight: Vampire attacks vampire the attacker Vampire should win")
+    @DisplayName("10. Fight: Vampire attacks vampire the attacker Vampire should win")
     void whenVampireAttacksVampire_FirstVampire() {
         //Given
         var vampire1 = new Vampire();

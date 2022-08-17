@@ -1,16 +1,24 @@
 package org.study.warriors.model;
 
-import org.study.warriors.model.decorator.WarriorDecorator;
+import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
+import org.study.warriors.model.observer.Observer;
 
 import java.util.*;
 import java.util.function.Supplier;
 
     /** By returning Army in each addUnit type of method we are able to use so-called fluent interface */
 
-public class Army {
+@Getter
+public class Army implements Observer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Army.class);
+
     private final List<IWarrior> soldiers = new LinkedList<>();
+    private Warlord armyWarlord;
 
     public Iterator<IWarrior> firstAlive() {
         return new FirstAliveIterator();
@@ -18,11 +26,9 @@ public class Army {
 
     public Army addSingleUnit(IWarrior warrior) {
         soldiers.add(warrior);
-        lineUp(this);
         return this;
     }
 
-    /** Use of generic class(?) for invoking to type of unit we want to create and add to army. */
     public Army addUnits(Class<? extends IWarrior> clazz, int quantity) {
         try {
             var constructor = clazz.getDeclaredConstructor();
@@ -36,7 +42,6 @@ public class Army {
         return this;
     }
 
-    /** Use of Factory Pattern. UnitType has been placed in Unit-interface as well as 'createUnit' method */
     public void addUnits(Unit.UnitType type, int quantity) {
         for (int i = 0; i < quantity; i++) {
             IWarrior warrior = (IWarrior) Unit.newUnit(type);
@@ -44,30 +49,27 @@ public class Army {
         }
     }
 
-    /** Use of Functional Interface - Supplier. Its method 'get' generates new Warrior object. */
     public Army addUnits(Supplier<IWarrior> factory, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            var warrior = factory.get();
-            soldiers.add(warrior);
+        if (factory.get() instanceof Warlord warlord && armyWarlord == null) {
+            armyWarlord = warlord;
+            soldiers.add(warlord);
+            LOGGER.trace("Warlord added to army!");
+        }
+        if (!(factory.get() instanceof Warlord)) {
+            for (int i = 0; i < quantity; i++) {
+                var warrior = factory.get();
+                soldiers.add(warrior);
+                warrior.registerObserver(this);
+            }
         }
         return this;
     }
 
-    /** Use of shallowClone. */
     public Army addUnits(Warrior prototype, int quantity) {
         for (int i = 0; i < quantity; i++) {
             IWarrior warrior = prototype.clone();
             soldiers.add(warrior);
         }
-        return this;
-    }
-
-    /** Use of deepClone for Warrior various decorators */
-    public Army addUnits(WarriorDecorator prototype, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            soldiers.add(prototype.clone());
-        }
-        lineUp(this);
         return this;
     }
 
@@ -85,7 +87,7 @@ public class Army {
         return !soldiers.isEmpty();
     }
 
-    public IWarrior getSoldierFromGivenPosition(int position) {
+    public IWarrior unitAtPosition(int position) {
         return soldiers.get(position);
     }
 
@@ -99,17 +101,37 @@ public class Army {
         soldiers.removeIf(soldier -> !soldier.isAlive());
     }
 
-    private void lineUp(Army army) {
-        var soldiers = army.soldiers;
-
-        for (int i = 0; i < army.soldiers.size(); i++) {
-            if (soldiers.get(i) instanceof WarriorDecorator soldier) {
-                if (i < army.soldiers.size() - 1 && soldiers.get(i + 1) instanceof WarriorDecorator nextSoldier) {
-                    soldier.setNextInChain(nextSoldier);
-                } else if (i > 0 && soldiers.get(i - 1) instanceof WarriorDecorator previousSoldier) {
-                    soldier.setPreviousInChain(previousSoldier);
-                }
+    public void lineUp() {
+        for (int i = 0; i < soldiers.size(); i++) {
+            var soldier = soldiers.get(i);
+            if (i < soldiers.size() - 1) {
+                var nextSoldier = soldiers.get(i + 1);
+                soldier.setNextInChain(nextSoldier);
             }
+        }
+    }
+
+    public void moveUnits() {
+        if (armyWarlord != null && armyWarlord.isAlive()) {
+            var sortedSoldiers = armyWarlord.sortSoldiers(soldiers);
+            soldiers.clear();
+            soldiers.addAll(sortedSoldiers);
+            lineUp();
+        } else {
+            LOGGER.trace("There is no Warlord in the army or he is dead!");
+        }
+    }
+
+    public static void moveUnitsForArmies(Army... armies) {
+        for (var army : armies) {
+            army.moveUnits();
+        }
+    }
+
+    @Override
+    public void update(IWarrior warrior) {
+        if (!warrior.isAlive()) {
+            moveUnits();
         }
     }
 

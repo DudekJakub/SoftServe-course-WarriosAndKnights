@@ -2,8 +2,6 @@ package org.study.warriors.model;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.decorator.HealerDecorator;
-import org.study.warriors.model.decorator.WarriorDecorator;
 import org.study.warriors.model.weapon.Dagger;
 import org.study.warriors.model.weapon.Weapon;
 import org.study.warriors.service.Battle;
@@ -96,26 +94,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    @DisplayName("6. Weapon equip (for decorators): equipping weapons by decorated warriors should work as for normal warriors")
-    void test6() {
-        //Given
-        var sword = Weapon.newSword();
-        var decoratedWarrior1 = new WarriorDecorator(new Warrior());
-        var decoratedWarrior2 = new WarriorDecorator(new Warrior());
-
-        //When
-        decoratedWarrior1.equipWeapons(sword);
-        decoratedWarrior2.equipWeapons(sword);
-
-        //Then
-        assertEquals(7, decoratedWarrior1.getAttack());
-        assertEquals(55, decoratedWarrior1.getHealth());
-        assertEquals(7, decoratedWarrior2.getAttack());
-        assertEquals(55, decoratedWarrior2.getHealth());
-    }
-
-    @Test
-    @DisplayName("7. Duel between x2 equipped Warriors: both Warriors should be boosted by weapons and second first one should win")
+    @DisplayName("6. Duel between x2 equipped Warriors: both Warriors should be boosted by weapons and second first one should win")
     void test7() {
         //Given
         var sword = Weapon.newSword();
@@ -139,26 +118,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    @DisplayName("8. Weapon equip (for decorators): equipping lazy initial-weapons by decorated warriors should work as for normal warriors")
-    void test8() {
-        //Given
-        var dagger = new Dagger();
-        var decoratedWarrior1 = new WarriorDecorator(new Warrior());
-        var decoratedWarrior2 = new WarriorDecorator(new Warrior());
-
-        //When
-        decoratedWarrior1.equipWeapons(dagger);
-        decoratedWarrior2.equipWeapons(dagger);
-
-        var battleResult = Battle.fight(decoratedWarrior1, decoratedWarrior2);
-
-        //Then
-        assertEquals(8, decoratedWarrior1.getAttack());
-        assertEquals(8, decoratedWarrior2.getAttack());
-    }
-
-    @Test
-    @DisplayName("9. Weapon equip: single warrior equips the same sword two times so his attack = 9 and health = 60")
+    @DisplayName("7. Weapon equip: single warrior equips the same sword two times so his attack = 9 and health = 60")
     void test9() {
         //Given
         var sword = Weapon.newSword();
@@ -173,7 +133,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    @DisplayName("10. Weapon equip: single vampire equips the same katana two times so his attack = 12 and health = 0 and vampirism = 150")
+    @DisplayName("8. Weapon equip: single vampire equips the same katana two times so his attack = 12 and health = 0 and vampirism = 150")
     void test10() {
         //Given
         var katana = Weapon.newKatana();
@@ -189,7 +149,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    @DisplayName("11. Weapon equip: ")
+    @DisplayName("9. Weapon equip: warrior equips sword so healer should heals him up to 55 HP and no more")
     void test11() {
         //Given
         var magicWand = Weapon.newMagicWand();
@@ -209,7 +169,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    @DisplayName("12. Weapon equip: ")
+    @DisplayName("10. Weapon equip: vampire equips great axe so he drains life up to 25 HP and no more")
     void test12() {
         //Given
         var greatAxe = Weapon.newGreatAxe();
@@ -225,7 +185,8 @@ public class WeaponSuiteTest {
     }
 
     @Test
-    void test13givenWoundedWarrior10Hp_whenEquippedWithSword_thenHisHpShouldIncreaseTo30() {
+    @DisplayName("11. Weapon equip: warrior equips sword so his HP should increases to 15")
+    void test13() {
         //Given
         var warrior = new Warrior();
         warrior.setHealth(10);
@@ -239,6 +200,7 @@ public class WeaponSuiteTest {
     }
 
     @Test
+    @DisplayName("12. Weapon equip: vampire equips katana so after hit he shouldn't drain more life then 20 HP")
     void test14() {
         //Given
         var katana = Weapon.newKatana();
@@ -255,25 +217,8 @@ public class WeaponSuiteTest {
 
 
     @Test
-    void test15() {
-        //Given
-        var katana = Weapon.newKatana();
-        var magicWand = Weapon.newMagicWand();
-        var vampire = new WarriorDecorator(new Vampire());
-        var healer = new HealerDecorator(new Healer());
-
-        //When
-        vampire.equipWeapons(katana);
-        healer.equipWeapons(magicWand);
-        healer.heal(vampire, healer.getHealPower());
-
-        //Then
-        assertEquals(20, vampire.getHealth());
-    }
-
-    @Test
-    @DisplayName("")
-    void whenWoundedVampire25HpEquipsKatanaAndHitsWarriorTwice_HisHealthShouldBe20() {
+    @DisplayName("13. Weapon equip: vampire with reduced HP to 15 equips katana (new HP = 5) and hits warrior 2 times. First hit drains 10 HP, so new HP = 15 and second hit drains only 5 HP up to limit 20 HP")
+    void test16() {
         //Given
         var vampire = new Vampire();
         var warrior = new Warrior();

@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.equipment.weapon.WeaponEquipment;
 import org.study.warriors.model.interfaces.CanHeal;
+import org.study.warriors.model.interfaces.HasHealth;
 import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.request.IRequest;
+import org.study.warriors.model.request.type.HealRequest;
 
 public class Healer extends Warrior implements CanHeal {
 
@@ -48,6 +51,17 @@ public class Healer extends Warrior implements CanHeal {
     @Override
     public void hit(IWarrior target) {
         LOGGER.trace("{} would like to attack the target {}, but he is so very pacifist!", this, target);
+    }
+
+    @Override
+    public void processRequest(IRequest request) {
+        if (request instanceof HealRequest && isAlive()) {
+            LOGGER.trace("{} is currently process...", request.getRequestName());
+            heal(request.getRequestSender(), getHealPower());
+            LOGGER.trace("{} has been processed!", request.getRequestName());
+        } else {
+            super.processRequest(request);
+        }
     }
 
     @Override

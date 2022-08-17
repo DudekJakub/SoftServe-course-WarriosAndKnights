@@ -35,11 +35,17 @@ public class Battle {
     public static boolean fight(Army attackers, Army defenders) {
         var it1 = attackers.firstAlive();
         var it2 = defenders.firstAlive();
+        int counter = 0;
 
+        attackers.lineUp();
+        defenders.lineUp();
+        Army.moveUnitsForArmies(attackers, defenders);
         LOGGER.debug("Army before battle (with HP & insertion order): " + "ATTACKERS: " + attackers.getSoldiersAndTheirHp() + " | DEFENDERS: " + defenders.getSoldiersAndTheirHp());
         LOGGER.debug("ArmyBattle has begun!");
         while (it1.hasNext() && it2.hasNext()) {
+            LOGGER.trace("---- ROUND: " + ++counter + " ----");
             fight(it1.next(), it2.next());
+            Army.moveUnitsForArmies(attackers, defenders);
             LOGGER.debug("Alive soldiers: AttackerSide = {} | DefenderSide = {}\n", attackers.getAliveSoldiers(), defenders.getAliveSoldiers());
         }
         LOGGER.debug("ArmyBattle has ended!");
@@ -53,7 +59,7 @@ public class Battle {
         while (leftArmy.isAlive() && rightArmy.isAlive()) {
             int smallerArmySize = Math.min(leftArmy.getArmySize(), rightArmy.getArmySize());
             for (int i = 0; i < smallerArmySize; i++) {
-                fight(leftArmy.getSoldierFromGivenPosition(i), rightArmy.getSoldierFromGivenPosition(i));
+                fight(leftArmy.unitAtPosition(i), rightArmy.unitAtPosition(i));
             }
             LOGGER.trace("Removing dead soldiers from armies...");
             leftArmy.removeDeadSoldiersFromArmy();

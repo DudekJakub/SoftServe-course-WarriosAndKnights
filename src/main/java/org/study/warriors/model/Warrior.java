@@ -3,9 +3,11 @@ package org.study.warriors.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.equipment.weapon.WeaponEquipment;
+import org.study.warriors.model.interfaces.CanWieldWeapon;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.observer.Observer;
+import org.study.warriors.model.request.Chain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +19,17 @@ import java.util.List;
  *      3) reduceHealthBasedOnDamage -> ^^ uses setHealth() to determinate final amount of fighter's HP after duel
  **/
 
-public class Warrior implements Unit, IWarrior, Cloneable {
+public class Warrior implements Unit, IWarrior, Chain, Cloneable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Warrior.class);
+
     static final int INITIAL_HEALTH = 50;
     static final int INITIAL_ATTACK = 5;
 
     private int health;
     private int attack;
     private int lastReceivedDamage = 0;
+    private Chain nextInChain;
     private final WeaponEquipment weaponEquipment;
     private final List<Observer> observers;
 
@@ -61,6 +65,11 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     }
 
     @Override
+    public Chain getNextInChain() {
+        return nextInChain;
+    }
+
+    @Override
     public WeaponEquipment getEquipment() {
         return weaponEquipment;
     }
@@ -68,6 +77,11 @@ public class Warrior implements Unit, IWarrior, Cloneable {
     @Override
     public void setLastReceivedDamage(int damage) {
         this.lastReceivedDamage = damage;
+    }
+
+    @Override
+    public void setNextInChain(Chain nextInChain) {
+        this.nextInChain = nextInChain;
     }
 
     @Override

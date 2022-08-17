@@ -5,13 +5,15 @@ import org.study.warriors.model.request.Request;
 
 public class HealRequest extends Request {
 
-    private final IWarrior sender;
+    private final int invocationLimit;
 
-    public HealRequest(IWarrior sender) {
-        this.sender = sender;
+    public HealRequest(IWarrior requestSender) {
+        super(requestSender);
+        this.invocationLimit = 1;
     }
 
-    public IWarrior getSender() {
-        return sender;
+    @Override
+    public int getInvocationLimit() {
+        return invocationLimit;
     }
 }
