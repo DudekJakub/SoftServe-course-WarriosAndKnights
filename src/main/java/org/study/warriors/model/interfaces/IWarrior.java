@@ -17,7 +17,7 @@ public interface IWarrior extends HasHealth, CanAttack, CanWieldWeapon, Chain, O
     default void hit(IWarrior target) {
         LOGGER.trace("---- {} IN ACTION ----", this);
         LOGGER.trace("{} hits {}", this, target);
-        sendRequest(new DamageRequest(new SimpleDamage(getAttack())), target);
+        sendRequest(new DamageRequest(this ,new SimpleDamage(getAttack())), target);
         sendRequest(new HealRequest(this), getNextInChain());
     }
 }
