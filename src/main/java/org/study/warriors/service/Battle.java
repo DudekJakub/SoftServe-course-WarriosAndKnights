@@ -3,6 +3,8 @@ package org.study.warriors.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Army;
+import org.study.warriors.model.divine.DivineArmy;
+import org.study.warriors.model.divine.goddess.Sun;
 import org.study.warriors.model.interfaces.IWarrior;
 
 public class Battle {
@@ -35,17 +37,21 @@ public class Battle {
     public static boolean fight(Army attackers, Army defenders) {
         var it1 = attackers.firstAlive();
         var it2 = defenders.firstAlive();
-        int counter = 0;
+        int roundCounter = 0;
+        int dayNightCycleCounter = setDayNightCycleAccordingToArmy(attackers);
 
+        updateArmiesWithDayNightCycleChange(dayNightCycleCounter, attackers, defenders);
         attackers.lineUp();
         defenders.lineUp();
         Army.moveUnitsForArmies(attackers, defenders);
         LOGGER.debug("Army before battle (with HP & insertion order): " + "ATTACKERS: " + attackers.getSoldiersAndTheirHp() + " | DEFENDERS: " + defenders.getSoldiersAndTheirHp());
         LOGGER.debug("ArmyBattle has begun!");
         while (it1.hasNext() && it2.hasNext()) {
-            LOGGER.trace("---- ROUND: " + ++counter + " ----");
+            LOGGER.trace("---- ROUND: " + ++roundCounter + " ----");
             fight(it1.next(), it2.next());
             Army.moveUnitsForArmies(attackers, defenders);
+            dayNightCycleCounter++;
+            updateArmiesWithDayNightCycleChange(dayNightCycleCounter, attackers, defenders);
             LOGGER.debug("Alive soldiers: AttackerSide = {} | DefenderSide = {}\n", attackers.getAliveSoldiers(), defenders.getAliveSoldiers());
         }
         LOGGER.debug("ArmyBattle has ended!");
@@ -67,5 +73,24 @@ public class Battle {
         }
         LOGGER.debug("The straight fight between {} and {} has ended!", leftArmy.getSoldiersAndTheirHp(), rightArmy.getSoldiersAndTheirHp());
         return leftArmy.isAlive();
+    }
+
+    private static void updateArmiesWithDayNightCycleChange(int dayNightCycleCounter, Army... armies) {
+        boolean isDayTime = dayNightCycleCounter == 0 || (dayNightCycleCounter + 3) % 3 != 0;
+
+        LOGGER.trace("[DAY/NIGHT CYCLE TIME: {}]", isDayTime ? "DAY" : "NIGHT");
+        for (var army : armies) {
+            if (army instanceof DivineArmy divineArmy) {
+                divineArmy.updateSoldiersIfItsDayTime(isDayTime);
+            }
+        }
+    }
+
+    private static int setDayNightCycleAccordingToArmy(Army army) {
+        if (army instanceof DivineArmy divineArmy && divineArmy.getGoddess() instanceof Sun) {
+            return 0;
+        } else {
+            return 3;
+        }
     }
 }
