@@ -7,7 +7,9 @@ import org.study.warriors.model.request.type.DamageRequest;
 
 public interface Chain extends HasHealth {
     void setNextInChain(Chain nextInChain);
+    void setPreviousInChain(Chain previousInChain);
     Chain getNextInChain();
+    Chain getPreviousInChain();
 
     default void sendRequest(IRequest request, Chain target) {
         LOGGER.trace("{} is being prepared{} by {}...", request.getRequestName(), request.getInvocationCounter() > 0 ? " to pass forward" : "",  this);
