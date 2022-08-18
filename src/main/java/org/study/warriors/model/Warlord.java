@@ -4,12 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.CanDefense;
 import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.interfaces.IWarlord;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class Warlord extends Defender implements CanDefense {
+public class Warlord extends Defender implements CanDefense, IWarlord {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Warlord.class);
 
@@ -50,19 +51,5 @@ public class Warlord extends Defender implements CanDefense {
         LOGGER.debug("Warlord has sorted all of his soldiers!");
 
         return sortedSoldiers;
-    }
-
-    public void placeGivenTypeOfSoldiersInGivenPositionOfArmy(List<IWarrior> givenArmy, Class<?> clazz, int position) {
-        var temporaryListOfGivenTypeSoldiers = givenArmy.stream().filter(clazz::isInstance).toList();
-        givenArmy.removeIf(clazz::isInstance);
-        givenArmy.addAll(position, temporaryListOfGivenTypeSoldiers);
-        LOGGER.trace("Warlord has sorted soldiers of type: {}", clazz.getSimpleName());
-        placeDeadSoldiersAtTailOfArmy(givenArmy);
-    }
-
-    private void placeDeadSoldiersAtTailOfArmy(List<IWarrior> givenArmy) {
-        var temporaryListOfDeadSoldiers = givenArmy.stream().filter(warrior -> !warrior.isAlive()).toList();
-        givenArmy.removeAll(temporaryListOfDeadSoldiers);
-        givenArmy.addAll(givenArmy.size(), temporaryListOfDeadSoldiers);
     }
 }

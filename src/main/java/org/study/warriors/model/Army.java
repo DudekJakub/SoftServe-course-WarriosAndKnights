@@ -3,6 +3,7 @@ package org.study.warriors.model;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.study.warriors.model.interfaces.IWarlord;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.observer.Observer;
@@ -17,8 +18,8 @@ public class Army implements Observer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Army.class);
 
-    private final List<IWarrior> soldiers = new LinkedList<>();
-    private Warlord armyWarlord;
+    protected final List<IWarrior> soldiers = new LinkedList<>();
+    protected IWarlord armyWarlord;
 
     public Iterator<IWarrior> firstAlive() {
         return new FirstAliveIterator();
@@ -50,12 +51,12 @@ public class Army implements Observer {
     }
 
     public Army addUnits(Supplier<IWarrior> factory, int quantity) {
-        if (factory.get() instanceof Warlord warlord && armyWarlord == null) {
+        if (factory.get() instanceof IWarlord warlord && armyWarlord == null) {
             armyWarlord = warlord;
             soldiers.add(warlord);
             LOGGER.trace("Warlord added to army!");
         }
-        if (!(factory.get() instanceof Warlord)) {
+        if (!(factory.get() instanceof IWarlord)) {
             for (int i = 0; i < quantity; i++) {
                 var warrior = factory.get();
                 soldiers.add(warrior);
@@ -107,6 +108,9 @@ public class Army implements Observer {
             if (i < soldiers.size() - 1) {
                 var nextSoldier = soldiers.get(i + 1);
                 soldier.setNextInChain(nextSoldier);
+            } else if (i > 0) {
+                var previousSoldier = soldiers.get(i - 1);
+                soldier.setPreviousInChain(previousSoldier);
             }
         }
     }
@@ -136,24 +140,26 @@ public class Army implements Observer {
     }
 
         private class FirstAliveIterator implements Iterator<IWarrior> {
-        int cursor = 0;
+            int cursor = 0;
 
-        /** Example explanation : if cursor = 0 then 1st condition is satisfied, if first solider is alive 2nd condition is NOT satisfied so
-         *                        we exit while loop and check & return whether cursor is still lower then soldiers size */
-        @Override
-        public boolean hasNext() {
-            while (cursor < soldiers.size() && !soldiers.get(cursor).isAlive()) {
-                cursor++;
+            /**
+             * Example explanation : if cursor = 0 then 1st condition is satisfied, if first solider is alive 2nd condition is NOT satisfied so
+             * we exit while loop and check & return whether cursor is still lower then soldiers size
+             */
+            @Override
+            public boolean hasNext() {
+                while (cursor < soldiers.size() && !soldiers.get(cursor).isAlive()) {
+                    cursor++;
+                }
+                return cursor < soldiers.size();
             }
-            return cursor < soldiers.size();
-        }
 
-        @Override
-        public IWarrior next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("No more soldiers in the army");
+            @Override
+            public IWarrior next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("No more soldiers in the army");
+                }
+                return soldiers.get(cursor);
             }
-            return soldiers.get(cursor);
         }
-    }
 }

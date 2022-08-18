@@ -3,7 +3,6 @@ package org.study.warriors.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.equipment.weapon.WeaponEquipment;
-import org.study.warriors.model.interfaces.CanWieldWeapon;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.observer.Observer;
@@ -30,6 +29,7 @@ public class Warrior implements Unit, IWarrior, Chain, Cloneable {
     private int attack;
     private int lastReceivedDamage = 0;
     private Chain nextInChain;
+    private Chain previousInChain;
     private final WeaponEquipment weaponEquipment;
     private final List<Observer> observers;
 
@@ -70,6 +70,11 @@ public class Warrior implements Unit, IWarrior, Chain, Cloneable {
     }
 
     @Override
+    public Chain getPreviousInChain() {
+        return previousInChain;
+    }
+
+    @Override
     public WeaponEquipment getEquipment() {
         return weaponEquipment;
     }
@@ -82,6 +87,11 @@ public class Warrior implements Unit, IWarrior, Chain, Cloneable {
     @Override
     public void setNextInChain(Chain nextInChain) {
         this.nextInChain = nextInChain;
+    }
+
+    @Override
+    public void setPreviousInChain(Chain previousInChain) {
+        this.previousInChain = previousInChain;
     }
 
     @Override
