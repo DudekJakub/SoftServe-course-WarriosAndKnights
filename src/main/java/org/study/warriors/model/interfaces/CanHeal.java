@@ -8,7 +8,9 @@ public interface CanHeal {
     Logger LOGGER = LoggerFactory.getLogger(CanHeal.class);
 
     int getHealPower();
+    int getHealEssence();
     void setHealPower(int healPower);
+    void setHealEssence(int healEssence);
 
     default void heal(HasHealth target, int healValue) {
         target.increaseHealthBasedOnHeal(healValue);

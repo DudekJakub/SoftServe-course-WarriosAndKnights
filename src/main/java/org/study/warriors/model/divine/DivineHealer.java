@@ -3,13 +3,13 @@ package org.study.warriors.model.divine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Healer;
-import org.study.warriors.model.damage.IDamage;
 import org.study.warriors.model.interfaces.CanHeal;
 import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.request.Chain;
 import org.study.warriors.model.request.IRequest;
 import org.study.warriors.model.request.type.HealRequest;
 
-public class DivineHealer extends DivineWarrior implements CanHeal {
+public class DivineHealer extends DivineWarrior implements CanHeal, Chain {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DivineHealer.class);
 
@@ -19,8 +19,19 @@ public class DivineHealer extends DivineWarrior implements CanHeal {
     }
 
     @Override
+    public void hit(IWarrior target) {
+        LOGGER.trace("---- {} IN ACTION ----", this);
+        castDamageSpell((DivineSoldier) target);
+    }
+
+    @Override
     public int getHealPower() {
         return ((Healer) decorated).getHealPower();
+    }
+
+    @Override
+    public int getHealEssence() {
+        return ((Healer) decorated).getHealEssence();
     }
 
     @Override
@@ -29,11 +40,15 @@ public class DivineHealer extends DivineWarrior implements CanHeal {
     }
 
     @Override
+    public void setHealEssence(int healEssence) {
+        ((Healer) decorated).setHealEssence(healEssence);
+    }
+
+    @Override
     public void processRequest(IRequest request) {
-        if (request instanceof HealRequest && isAlive()) {
-            LOGGER.trace("{} is currently process...", request.getRequestName());
-            heal(request.getRequestSender(), getHealPower());
-            LOGGER.trace("{} has been processed!", request.getRequestName());
+        if (request instanceof HealRequest) {
+            castSupportSpell(null);
+            decorated.processRequest(request);
         } else {
             super.processRequest(request);
         }

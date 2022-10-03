@@ -6,8 +6,7 @@ import org.study.warriors.model.weapon.Dagger;
 import org.study.warriors.model.weapon.Weapon;
 import org.study.warriors.service.Battle;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WeaponSuiteTest {
 
@@ -32,6 +31,8 @@ public class WeaponSuiteTest {
         //Given
         var shield = Weapon.newShield();
         var defender = new Defender();
+        System.out.println(defender.getDefense());
+        System.out.println(shield.getDefenseModifier());
 
         //When
         defender.equipWeapons(shield);
@@ -95,7 +96,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("6. Duel between x2 equipped Warriors: both Warriors should be boosted by weapons and second first one should win")
-    void test7() {
+    void test6() {
         //Given
         var sword = Weapon.newSword();
         var shield = Weapon.newShield();
@@ -119,7 +120,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("7. Weapon equip: single warrior equips the same sword two times so his attack = 9 and health = 60")
-    void test9() {
+    void test7() {
         //Given
         var sword = Weapon.newSword();
         var warrior = new Warrior();
@@ -134,7 +135,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("8. Weapon equip: single vampire equips the same katana two times so his attack = 12 and health = 0 and vampirism = 150")
-    void test10() {
+    void test8() {
         //Given
         var katana = Weapon.newKatana();
         var vampire = new Vampire();
@@ -150,7 +151,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("9. Weapon equip: warrior equips sword so healer should heals him up to 55 HP and no more")
-    void test11() {
+    void test9() {
         //Given
         var magicWand = Weapon.newMagicWand();
         var sword = Weapon.newSword();
@@ -170,7 +171,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("10. Weapon equip: vampire equips great axe so he drains life up to 25 HP and no more")
-    void test12() {
+    void test10() {
         //Given
         var greatAxe = Weapon.newGreatAxe();
         var vampire = new Vampire();
@@ -186,7 +187,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("11. Weapon equip: warrior equips sword so his HP should increases to 15")
-    void test13() {
+    void test11() {
         //Given
         var warrior = new Warrior();
         warrior.setHealth(10);
@@ -201,7 +202,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("12. Weapon equip: vampire equips katana so after hit he shouldn't drain more life then 20 HP")
-    void test14() {
+    void test12() {
         //Given
         var katana = Weapon.newKatana();
         var vampire = new Vampire();
@@ -218,7 +219,7 @@ public class WeaponSuiteTest {
 
     @Test
     @DisplayName("13. Weapon equip: vampire with reduced HP to 15 equips katana (new HP = 5) and hits warrior 2 times. First hit drains 10 HP, so new HP = 15 and second hit drains only 5 HP up to limit 20 HP")
-    void test16() {
+    void test13() {
         //Given
         var vampire = new Vampire();
         var warrior = new Warrior();
@@ -234,5 +235,27 @@ public class WeaponSuiteTest {
         //Then
         assertEquals(15, healthAfterFirstHit);
         assertEquals(20, healthAfterSecondHit);
+    }
+
+    @Test
+    @DisplayName("14. Weapon equip: vampire equips x2 katana and he should be dead")
+    void test14() {
+        //Given
+        var vampire = new Vampire();
+        var katana = Weapon.newKatana();
+        var vampireHealthBefore = vampire.getHealth();
+        var vampireInitialHealthBefore = vampire.getInitialHealth();
+
+        //When
+        vampire.equipWeapons(katana, katana);
+        var vampireHealthAfter = vampire.getHealth();
+        var vampireInitialHealthAfter = vampire.getInitialHealth();
+
+        //Then
+        assertEquals(40, vampireHealthBefore);
+        assertEquals(40, vampireInitialHealthBefore);
+        assertEquals(0, vampireHealthAfter);
+        assertEquals(0, vampireInitialHealthAfter);
+        assertFalse(vampire.isAlive());
     }
 }

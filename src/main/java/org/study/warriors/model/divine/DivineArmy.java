@@ -1,7 +1,5 @@
 package org.study.warriors.model.divine;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Army;
 import org.study.warriors.model.divine.goddess.Goddess;
 import org.study.warriors.model.interfaces.IWarrior;
@@ -9,8 +7,6 @@ import org.study.warriors.model.interfaces.IWarrior;
 import java.util.function.Supplier;
 
 public class DivineArmy extends Army {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DivineArmy.class);
 
     private final Goddess goddess;
 
@@ -29,6 +25,8 @@ public class DivineArmy extends Army {
 
         for (var divineSoldier : soldiersWithoutDivineModifier) {
             ((DivineWarrior) divineSoldier).setDivineModifier(goddess.getDivineModifier());
+            ((DivineWarrior) divineSoldier).acceptGoddessBlessing(goddess);
+            ((DivineWarrior) divineSoldier).setBrothersInArm(soldiers);
         }
         return this;
     }
@@ -37,7 +35,7 @@ public class DivineArmy extends Army {
         soldiers.forEach(soldier -> ((DivineWarrior) soldier).updateDayNightCycle(isDayTime));
     }
 
-    public Goddess getGoddess() {
-        return goddess;
+    public Goddess.GoddessType getDivineType() {
+        return goddess.getDivineType();
     }
 }

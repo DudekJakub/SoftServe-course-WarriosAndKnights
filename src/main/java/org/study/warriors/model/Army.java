@@ -3,6 +3,7 @@ package org.study.warriors.model;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.study.warriors.model.divine.DivineSoldier;
 import org.study.warriors.model.interfaces.IWarlord;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
@@ -13,7 +14,6 @@ import java.util.function.Supplier;
 
     /** By returning Army in each addUnit type of method we are able to use so-called fluent interface */
 
-@Getter
 public class Army implements Observer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Army.class);
@@ -122,7 +122,7 @@ public class Army implements Observer {
             soldiers.addAll(sortedSoldiers);
             lineUp();
         } else {
-            LOGGER.trace("There is no Warlord in the army or he is dead!");
+            LOGGER.trace("[MOVE UNITS] There is no Warlord in the army or he is dead!");
         }
     }
 

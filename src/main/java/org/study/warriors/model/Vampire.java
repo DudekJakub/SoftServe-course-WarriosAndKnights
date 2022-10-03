@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.study.warriors.model.equipment.weapon.WeaponEquipment;
 import org.study.warriors.model.interfaces.CanDrainLife;
 import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.weapon.Weapon;
 
 public class Vampire extends Warrior implements CanDrainLife {
 
@@ -15,6 +16,7 @@ public class Vampire extends Warrior implements CanDrainLife {
     static final int VAMPIRISM = 50;
 
     private int vampirism;
+    private int lastDealtDamage;
 
     public Vampire() {
         this(INITIAL_HEALTH, ATTACK, VAMPIRISM);
@@ -27,7 +29,7 @@ public class Vampire extends Warrior implements CanDrainLife {
 
     @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH + getEquipment().getHealthWeaponModifiers();
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override
@@ -36,14 +38,25 @@ public class Vampire extends Warrior implements CanDrainLife {
     }
 
     @Override
+    public int getLastDealtDamage() {
+        return lastDealtDamage;
+    }
+
+    @Override
     public void setVampirism(int vampirism) {
         this.vampirism = vampirism;
+    }
+
+    @Override
+    public void setLastDealtDamage(int lastDealtDamage) {
+        this.lastDealtDamage = lastDealtDamage;
     }
 
     @Override
     public void hit(IWarrior target) {
         super.hit(target);
         drainLifeBasedOnDealtAttack(target);
+        setLastDealtDamage(target.getLastReceivedDamage());
     }
 
     @Override

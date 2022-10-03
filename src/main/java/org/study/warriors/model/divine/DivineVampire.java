@@ -12,13 +12,20 @@ public class DivineVampire extends DivineWarrior implements CanDrainLife {
 
     public DivineVampire(IWarrior decorated) {
         super(decorated);
-        if (!(decorated instanceof Vampire)) throw new IllegalStateException("Given object to decorate is not Vampire!");
+        if (!(decorated instanceof Vampire)) throw new IllegalArgumentException("Given object to decorate is not Vampire!");
+        //HERE HERE HERE
     }
 
     @Override
     public void hit(IWarrior target) {
         divineModifier.modifyVampirism(this);
         super.hit(target);
+        castSupportSpell((DivineSoldier) getNextInChain());
+    }
+
+    @Override
+    public int getLastDealtDamage() {
+        return ((Vampire) decorated).getLastDealtDamage();
     }
 
     @Override
@@ -29,6 +36,11 @@ public class DivineVampire extends DivineWarrior implements CanDrainLife {
     @Override
     public void setVampirism(int vampirism) {
         ((Vampire) decorated).setVampirism(vampirism);
+    }
+
+    @Override
+    public void setLastDealtDamage(int lastDealtDamage) {
+        ((Vampire) decorated).setLastDealtDamage(lastDealtDamage);
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Army;
 import org.study.warriors.model.divine.DivineArmy;
+import org.study.warriors.model.divine.goddess.Goddess;
 import org.study.warriors.model.divine.goddess.Sun;
 import org.study.warriors.model.interfaces.IWarrior;
 
@@ -87,7 +88,7 @@ public class Battle {
     }
 
     private static int setDayNightCycleAccordingToArmy(Army army) {
-        if (army instanceof DivineArmy divineArmy && divineArmy.getGoddess() instanceof Sun) {
+        if (army instanceof DivineArmy divineArmy && divineArmy.getDivineType() == Goddess.GoddessType.SUN) {
             return 0;
         } else {
             return 3;

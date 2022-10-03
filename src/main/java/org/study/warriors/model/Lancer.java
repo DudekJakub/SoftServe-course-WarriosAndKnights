@@ -6,6 +6,7 @@ import org.study.warriors.model.damage.PierceDamage;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.request.type.DamageRequest;
 import org.study.warriors.model.request.type.HealRequest;
+import org.study.warriors.model.weapon.Weapon;
 
 public class Lancer extends Warrior {
 
@@ -22,13 +23,8 @@ public class Lancer extends Warrior {
     }
 
     @Override
-    public int getAttack() {
-        return ATTACK;
-    }
-
-    @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH;
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override

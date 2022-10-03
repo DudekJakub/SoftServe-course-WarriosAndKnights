@@ -7,6 +7,7 @@ import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.observer.Observer;
 import org.study.warriors.model.request.Chain;
+import org.study.warriors.model.weapon.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Warrior implements Unit, IWarrior, Chain, Cloneable {
     private int lastReceivedDamage = 0;
     private Chain nextInChain;
     private Chain previousInChain;
-    private final WeaponEquipment weaponEquipment;
+    protected final WeaponEquipment weaponEquipment;
     private final List<Observer> observers;
 
     public Warrior() {
@@ -56,7 +57,7 @@ public class Warrior implements Unit, IWarrior, Chain, Cloneable {
 
     @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH + weaponEquipment.getHealthWeaponModifiers();
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override

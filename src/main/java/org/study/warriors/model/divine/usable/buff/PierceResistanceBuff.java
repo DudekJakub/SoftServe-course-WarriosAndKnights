@@ -1,17 +1,15 @@
-package org.study.warriors.model.divine.buff;
+package org.study.warriors.model.divine.usable.buff;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.damage.IDamage;
 import org.study.warriors.model.damage.PierceDamage;
 import org.study.warriors.model.divine.DivineSoldier;
+import org.study.warriors.model.divine.usable.Usable;
 
-public class PierceResistanceBuff extends AbstractBuff implements ResistanceBuff {
+public class PierceResistanceBuff extends Usable implements ResistanceBuff {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PierceResistanceBuff.class);
-
-    private final int invocationLimit;
-    private boolean isReadyToUse = true;
 
     public PierceResistanceBuff(DivineSoldier holder) {
         super(holder);
@@ -33,19 +31,8 @@ public class PierceResistanceBuff extends AbstractBuff implements ResistanceBuff
         }
     }
 
-    private void checkActiveStatus() {
-        if (invocationCounter == invocationLimit) {
-           setReadyToUse(false);
-        }
-    }
-
-    @Override
-    public void setReadyToUse(boolean isReadyToUse) {
-        this.isReadyToUse = isReadyToUse;
-    }
-
     @Override
     public String toString() {
-        return getClass().getSimpleName() + isReadyToUse;
+        return getClass().getSimpleName();
     }
 }

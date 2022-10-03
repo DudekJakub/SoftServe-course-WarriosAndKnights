@@ -4,29 +4,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Warrior;
 import org.study.warriors.model.damage.IDamage;
-import org.study.warriors.model.divine.buff.Buff;
-import org.study.warriors.model.divine.buff.ResistanceBuff;
 import org.study.warriors.model.divine.modifier.DivineModifier;
-import org.study.warriors.model.divine.spell.Spell;
+import org.study.warriors.model.divine.usable.buff.Buff;
+import org.study.warriors.model.divine.usable.buff.ResistanceBuff;
+import org.study.warriors.model.divine.usable.spell.DamageSpell;
+import org.study.warriors.model.divine.usable.spell.Spell;
+import org.study.warriors.model.divine.usable.spell.SupportSpell;
 import org.study.warriors.model.equipment.weapon.WeaponEquipment;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.Unit;
 import org.study.warriors.model.observer.Observer;
 import org.study.warriors.model.request.Chain;
-import org.study.warriors.model.request.IRequest;
 import org.study.warriors.model.weapon.Weapon;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-public class DivineWarrior implements Unit, IWarrior, Chain, Cloneable, DivineSoldier  {
+public class DivineWarrior implements Unit, IWarrior, Cloneable, DivineSoldier  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DivineWarrior.class);
 
     private final Set<Buff> buffs;
     private final Set<Spell> spells;
     protected DivineModifier divineModifier;
+    protected Iterable<IWarrior> brothersInArm;
     protected IWarrior decorated;
     protected boolean isDayTime;
     protected boolean isResistanceActive = false;
@@ -47,6 +48,7 @@ public class DivineWarrior implements Unit, IWarrior, Chain, Cloneable, DivineSo
         return spells;
     }
 
+
     @Override
     public int getAttack() {
         return decorated.getAttack();
@@ -60,6 +62,11 @@ public class DivineWarrior implements Unit, IWarrior, Chain, Cloneable, DivineSo
     @Override
     public int getInitialHealth() {
         return decorated.getInitialHealth();
+    }
+
+    @Override
+    public Iterable<IWarrior> getBrothersInArm() {
+        return brothersInArm;
     }
 
     @Override
@@ -108,6 +115,11 @@ public class DivineWarrior implements Unit, IWarrior, Chain, Cloneable, DivineSo
     @Override
     public void setResistanceActive(boolean active) {
         this.isResistanceActive = active;
+    }
+
+    @Override
+    public void setBrothersInArm(Iterable<IWarrior> armyViewer) {
+        this.brothersInArm = armyViewer;
     }
 
     @Override
@@ -179,36 +191,24 @@ public class DivineWarrior implements Unit, IWarrior, Chain, Cloneable, DivineSo
         decorated.hit(target);
     }
 
-    @Override
-    public void sendRequest(IRequest request, Chain target) {
-        decorated.sendRequest(request, target);
-    }
-
     public void updateDayNightCycle(boolean isDayTime) {
         this.isDayTime = isDayTime;
     }
 
     public void applyResistanceBuffToGivenDamage(IDamage damage) {
         LOGGER.trace("{} is checking resistances...", this);
-        buffs.stream()
-                .filter(buff -> buff instanceof ResistanceBuff)
-                .forEach(buff -> buff.apply(damage));
-        cleanBuffs();
+        buffs.forEach(buff -> {if (buff instanceof ResistanceBuff) buff.apply(damage);});
     }
 
     public void castSupportSpell(DivineSoldier target) {
-        LOGGER.trace("{} is checking spells...", this);
-        spells.forEach(spell -> spell.apply(target));
-        cleanSpells();
+        LOGGER.trace("{} is checking [SUPPORT] spells...", this);
+        spells.forEach(spell -> {if (spell instanceof SupportSpell) spell.apply(target);});
     }
 
-    public void cleanBuffs() {
-
+    public void castDamageSpell(DivineSoldier target) {
+        LOGGER.trace("{} is checking [DAMAGE] spells...", this);
+        spells.forEach(spell -> {if (spell instanceof DamageSpell) spell.apply(target);});
     }
-
-    public void cleanSpells() {
-    }
-
 
     @Override
     public String toString() {

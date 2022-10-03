@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.study.warriors.model.interfaces.CanDefense;
 import org.study.warriors.model.interfaces.IWarrior;
 import org.study.warriors.model.interfaces.IWarlord;
+import org.study.warriors.model.weapon.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Warlord extends Defender implements CanDefense, IWarlord {
 
     @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH;
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     public List<IWarrior> sortSoldiers(Iterable<IWarrior> warlordSoldiers) {

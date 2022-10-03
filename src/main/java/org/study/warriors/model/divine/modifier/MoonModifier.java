@@ -10,18 +10,13 @@ public class MoonModifier implements DivineModifier {
 
     @Override
     public void modifyVampirism(DivineVampire vampire) {
-        var vampirismModifierForNightTime = 30;
+        var vampirismModifierForNightTime = 60;
         var currentVampirism = vampire.getVampirism();
 
         if (!vampire.isDayTime() && checkIfModifierMustBeApplied(vampirismModifierForNightTime, currentVampirism)) {
             vampire.setVampirism(vampirismModifierForNightTime);
-            LOGGER.trace("[DAY TIME] {} is affected by the goddess of the SUN | NEW VAMPIRISM : {}", vampire, vampirismModifierForNightTime);
+            LOGGER.trace("[NIGHT TIME] {} is affected by the goddess of the MOON | NEW VAMPIRISM : {}", vampire, vampirismModifierForNightTime);
         }
-    }
-
-    @Override
-    public void modifyLancer() {
-
     }
 
     @Override

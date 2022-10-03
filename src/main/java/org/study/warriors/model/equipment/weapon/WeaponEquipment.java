@@ -3,7 +3,9 @@ package org.study.warriors.model.equipment.weapon;
 import org.study.warriors.model.equipment.IWeaponEquipment;
 import org.study.warriors.model.weapon.Weapon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.ToIntFunction;
 
 public class WeaponEquipment implements IWeaponEquipment {
@@ -22,9 +24,9 @@ public class WeaponEquipment implements IWeaponEquipment {
                          .sum();
     }
 
-    public int getHealthWeaponModifiers() {
+    public int getWeaponModifiersOfGivenType(ToIntFunction<? super Weapon> function) {
         return weaponList.stream()
-                         .mapToInt(Weapon::getHealthModifier)
+                         .mapToInt(function)
                          .sum();
     }
 

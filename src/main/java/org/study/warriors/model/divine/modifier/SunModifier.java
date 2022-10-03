@@ -10,8 +10,8 @@ public class SunModifier implements DivineModifier {
 
     @Override
     public void modifyVampirism(DivineVampire vampire) {
-        var vampirismModifierForDayTime = 60;
-        var vampirismModifierForNightTime = 30;
+        var vampirismModifierForDayTime = 30;
+        var vampirismModifierForNightTime = 50;
         var currentVampirism = vampire.getVampirism();
 
         if (vampire.isDayTime() && checkIfModifierMustBeApplied(vampirismModifierForDayTime, currentVampirism)) {
@@ -21,11 +21,6 @@ public class SunModifier implements DivineModifier {
             vampire.setVampirism(vampirismModifierForNightTime);
             LOGGER.trace("[NIGHT TIME] {}'s vampirism has been weakened | NEW VAMPIRISM : {}", vampire, vampirismModifierForNightTime);
         }
-    }
-
-    @Override
-    public void modifyLancer() {
-
     }
 
     @Override

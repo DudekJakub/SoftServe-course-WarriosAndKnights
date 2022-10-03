@@ -31,7 +31,7 @@ public class Defender extends Warrior implements CanDefense {
 
     @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH;
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override
