@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SingleHitTestSuite {
+public class SingleHitSuiteTest {
 
     @Test
     @DisplayName("1. Single Hit By Warrior: Knight should lose 5 HP")

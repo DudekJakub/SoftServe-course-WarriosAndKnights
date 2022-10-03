@@ -3,13 +3,11 @@ package org.study.warriors.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.decorator.RequestHealerDecorator;
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
 import org.study.warriors.model.interfaces.Unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ArmyBasicFunctionTestSuite {
+class ArmyBasicFunctionSuiteTest {
 
     private Army army;
 
@@ -97,25 +95,57 @@ class ArmyBasicFunctionTestSuite {
     void whenArmyIsFormedUltimately_AlliesAreBoundedInChainRespectively() {
         //Given
             //BeforeEach setting
-        var unit1 = new RequestWarriorDecorator(new Warrior());
-        var unit2 = new RequestWarriorDecorator(new Defender());
-        var unit3 = new RequestHealerDecorator(new Healer());
+        var unit1 = new Warrior();
+        var unit2 = new Defender();
+        var unit3 = new Healer();
 
         //When
         army.addSingleUnit(unit1).addSingleUnit(unit2).addSingleUnit(unit3);
-        var firstUnitInFrontSoldier = unit1.getPreviousInChain();
         var firstUnitInBehindSoldier = unit1.getNextInChain();
-        var secondUnitInFrontSoldier = unit2.getPreviousInChain();
         var secondUnitInBehindSoldier = unit2.getNextInChain();
-        var thirdUnitInFrontSoldier = unit3.getPreviousInChain();
         var thirdUnitInBehindSoldier = unit3.getNextInChain();
 
         //Then
-        assertNull(firstUnitInFrontSoldier);
         assertEquals(unit2, firstUnitInBehindSoldier);
-        assertEquals(unit1, secondUnitInFrontSoldier);
         assertEquals(unit3, secondUnitInBehindSoldier);
-        assertEquals(unit2, thirdUnitInFrontSoldier);
         assertNull(thirdUnitInBehindSoldier);
+    }
+
+    @Test
+    @DisplayName("7. Warlord in army: when Warlord is added to army then there cannot be any other Warlord more")
+    void whenWarlordAddedToArmy_NoMoreWarlordCanBeAddedToArmy() {
+        //Given
+        var army = new Army();
+
+        //When
+        army.addUnits(Warlord::new, 2);
+        army.addUnits(Warlord::new, 1);
+
+        //Then
+        assertEquals(1, army.getArmySize());
+    }
+
+    @Test
+    @DisplayName("8. Army moveUnits(): when moveUnits() method is invoked then army should be rearranged respectively to the rules")
+    void testMoveUnits() {
+        //Given
+        var army = new Army();
+        army.addUnits(Warlord::new, 1)
+                .addUnits(Warrior::new, 2)
+                .addUnits(Healer::new, 1)
+                .addUnits(Lancer::new, 2);
+
+        //When
+        army.moveUnits();
+        var soldierAtFirstPosition = army.unitAtPosition(0);
+        var soldierAtSecondPosition = army.unitAtPosition(1);
+        var soldierAtThirdPosition = army.unitAtPosition(2);
+        var soldierAtTheLastPosition = army.unitAtPosition(army.getArmySize() - 1);
+
+        //Then
+        assertEquals(Lancer.class, soldierAtFirstPosition.getClass());
+        assertEquals(Healer.class, soldierAtSecondPosition.getClass());
+        assertEquals(Lancer.class, soldierAtThirdPosition.getClass());
+        assertEquals(Warlord.class, soldierAtTheLastPosition.getClass());
     }
 }

@@ -1,5 +1,7 @@
 package org.study.warriors.model;
 
+import org.study.warriors.model.weapon.Weapon;
+
 public class Knight extends Warrior {
     static final int ATTACK = 7;
 
@@ -8,12 +10,7 @@ public class Knight extends Warrior {
     }
 
     @Override
-    public int getAttack() {
-        return ATTACK;
-    }
-
-    @Override
     public int getInitialHealth() {
-        return INITIAL_HEALTH;
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 }

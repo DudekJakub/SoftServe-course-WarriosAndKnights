@@ -3,6 +3,9 @@ package org.study.warriors.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.study.warriors.model.Army;
+import org.study.warriors.model.divine.DivineArmy;
+import org.study.warriors.model.divine.goddess.Goddess;
+import org.study.warriors.model.divine.goddess.Sun;
 import org.study.warriors.model.interfaces.IWarrior;
 
 public class Battle {
@@ -19,7 +22,7 @@ public class Battle {
         while (attacker.isAlive() && defender.isAlive()) {
             attacker.hit(defender);
             if (!defender.isAlive()) {
-                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker.getClass().getCanonicalName(), attacker.getHealth(), defender, defender.getHealth());
+                LOGGER.debug("Duel between {} (HP left {}) and {} (HP left {}) is over!", attacker, attacker.getHealth(), defender, defender.getHealth());
                 return attacker.isAlive();
             } else {
                 defender.hit(attacker);
@@ -35,11 +38,21 @@ public class Battle {
     public static boolean fight(Army attackers, Army defenders) {
         var it1 = attackers.firstAlive();
         var it2 = defenders.firstAlive();
+        int roundCounter = 0;
+        int dayNightCycleCounter = setDayNightCycleAccordingToArmy(attackers);
 
+        updateArmiesWithDayNightCycleChange(dayNightCycleCounter, attackers, defenders);
+        attackers.lineUp();
+        defenders.lineUp();
+        Army.moveUnitsForArmies(attackers, defenders);
         LOGGER.debug("Army before battle (with HP & insertion order): " + "ATTACKERS: " + attackers.getSoldiersAndTheirHp() + " | DEFENDERS: " + defenders.getSoldiersAndTheirHp());
         LOGGER.debug("ArmyBattle has begun!");
         while (it1.hasNext() && it2.hasNext()) {
+            LOGGER.trace("---- ROUND: " + ++roundCounter + " ----");
             fight(it1.next(), it2.next());
+            Army.moveUnitsForArmies(attackers, defenders);
+            dayNightCycleCounter++;
+            updateArmiesWithDayNightCycleChange(dayNightCycleCounter, attackers, defenders);
             LOGGER.debug("Alive soldiers: AttackerSide = {} | DefenderSide = {}\n", attackers.getAliveSoldiers(), defenders.getAliveSoldiers());
         }
         LOGGER.debug("ArmyBattle has ended!");
@@ -53,7 +66,7 @@ public class Battle {
         while (leftArmy.isAlive() && rightArmy.isAlive()) {
             int smallerArmySize = Math.min(leftArmy.getArmySize(), rightArmy.getArmySize());
             for (int i = 0; i < smallerArmySize; i++) {
-                fight(leftArmy.getSoldierFromGivenPosition(i), rightArmy.getSoldierFromGivenPosition(i));
+                fight(leftArmy.unitAtPosition(i), rightArmy.unitAtPosition(i));
             }
             LOGGER.trace("Removing dead soldiers from armies...");
             leftArmy.removeDeadSoldiersFromArmy();
@@ -61,5 +74,24 @@ public class Battle {
         }
         LOGGER.debug("The straight fight between {} and {} has ended!", leftArmy.getSoldiersAndTheirHp(), rightArmy.getSoldiersAndTheirHp());
         return leftArmy.isAlive();
+    }
+
+    private static void updateArmiesWithDayNightCycleChange(int dayNightCycleCounter, Army... armies) {
+        boolean isDayTime = dayNightCycleCounter == 0 || (dayNightCycleCounter + 3) % 3 != 0;
+
+        LOGGER.trace("[DAY/NIGHT CYCLE TIME: {}]", isDayTime ? "DAY" : "NIGHT");
+        for (var army : armies) {
+            if (army instanceof DivineArmy divineArmy) {
+                divineArmy.updateSoldiersIfItsDayTime(isDayTime);
+            }
+        }
+    }
+
+    private static int setDayNightCycleAccordingToArmy(Army army) {
+        if (army instanceof DivineArmy divineArmy && divineArmy.getDivineType() == Goddess.GoddessType.SUN) {
+            return 0;
+        } else {
+            return 3;
+        }
     }
 }

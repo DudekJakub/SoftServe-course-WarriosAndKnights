@@ -1,7 +1,16 @@
 package org.study.warriors.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.study.warriors.model.damage.PierceDamage;
+import org.study.warriors.model.interfaces.IWarrior;
+import org.study.warriors.model.request.type.DamageRequest;
+import org.study.warriors.model.request.type.HealRequest;
+import org.study.warriors.model.weapon.Weapon;
+
 public class Lancer extends Warrior {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Lancer.class);
     static final int INITIAL_HEALTH = 50;
     static final int ATTACK = 6;
 
@@ -14,12 +23,14 @@ public class Lancer extends Warrior {
     }
 
     @Override
-    public int getAttack() {
-        return ATTACK;
+    public int getInitialHealth() {
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override
-    public int getInitialHealth() {
-        return INITIAL_HEALTH;
+    public void hit(IWarrior target) {
+        LOGGER.trace("---- {} IN ACTION ----", this);
+        sendRequest(new DamageRequest(this, new PierceDamage(getAttack())), target);
+        sendRequest(new HealRequest(this), getNextInChain());
     }
 }

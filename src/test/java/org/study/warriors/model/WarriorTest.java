@@ -1,7 +1,6 @@
 package org.study.warriors.model;
 
 import org.junit.jupiter.api.Test;
-import org.study.warriors.model.decorator.RequestWarriorDecorator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,25 +19,7 @@ class WarriorTest {
         army1.addUnits(warrior, 2);
 
         //Then
-        assertNotEquals(warrior.getAttack(), clonedWarrior.getAttack());
-        assertEquals(6, clonedWarrior.getAttack());
-    }
-
-    @Test
-    void deepCloneOfWarriorDecorator() {
-        //Given
-        var warriorDeco = new RequestWarriorDecorator(new Warrior());
-        var clonedWarriorDeco = warriorDeco.clone();
-        var warriorDecoHp = warriorDeco.getHealth();
-        var clonedWarriorDecoHp = clonedWarriorDeco.getHealth();
-
-        //When
-        warriorDeco.setHealth(40);
-        var newWarriorDecoHp = warriorDeco.getHealth();
-        var clonedWarriorDecoOldHp = clonedWarriorDeco.getHealth();
-
-        //Then
-        assertEquals(10, warriorDecoHp - newWarriorDecoHp);
-        assertEquals(clonedWarriorDecoHp, clonedWarriorDecoOldHp);
+        assertNotEquals(warrior.getHealth(), clonedWarrior.getHealth());
+        assertEquals(5, clonedWarrior.getAttack());
     }
 }

@@ -2,7 +2,9 @@ package org.study.warriors.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.study.warriors.model.equipment.weapon.WeaponEquipment;
 import org.study.warriors.model.interfaces.CanDefense;
+import org.study.warriors.model.weapon.Weapon;
 
 public class Defender extends Warrior implements CanDefense {
 
@@ -12,7 +14,7 @@ public class Defender extends Warrior implements CanDefense {
     static final int ATTACK = 3;
     static final int DEFENSE = 2;
 
-    private final int defense;
+    private int defense;
 
     public Defender() {
         this(INITIAL_HEALTH, ATTACK, DEFENSE);
@@ -28,13 +30,13 @@ public class Defender extends Warrior implements CanDefense {
     }
 
     @Override
-    public int getAttack() {
-        return ATTACK;
+    public int getInitialHealth() {
+        return INITIAL_HEALTH + weaponEquipment.getWeaponModifiersOfGivenType(Weapon::getHealthModifier);
     }
 
     @Override
-    public int getInitialHealth() {
-        return INITIAL_HEALTH;
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 
     @Override
@@ -43,5 +45,17 @@ public class Defender extends Warrior implements CanDefense {
         LOGGER.trace("Defender is blocking received damage with defense {} | DMG = {}", getDefense(), finalReceivedDamage);
         super.reduceHealthBasedOnDamage(Math.max(0, finalReceivedDamage));
         setLastReceivedDamage(finalReceivedDamage);
+    }
+
+    @Override
+    public void updateParametersFromWeapons(WeaponEquipment weaponEquipment) {
+        super.updateParametersFromWeapons(weaponEquipment);
+        setDefense(Math.max(0, getDefense() + weaponEquipment.getUnappliedDefenseModifiers()));
+    }
+
+    @Override
+    public void updateParameterFromSingleWeapon(Weapon weapon) {
+        super.updateParameterFromSingleWeapon(weapon);
+        setDefense(Math.max(0, getDefense() + weapon.getDefenseModifier()));
     }
 }
